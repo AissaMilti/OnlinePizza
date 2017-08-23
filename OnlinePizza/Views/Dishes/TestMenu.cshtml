@@ -7,151 +7,27 @@
 <h2>TestMenu</h2>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <div class="row">
-    <div class="col-md-12">
-        <table class="table table-hover table-striped">
-            <tbody>
-            <tr>
-                <td>
-                    <div style="margin-top: 10px">
+    
+    @foreach (var pizza in Model)
+    {
+        <div class="col-md-6">
+            <ul class="list-group">
+                <li class="list-group-item row">
+                    <div class="col-md-2">
                         <a href="#">
                             <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
                         </a>
                     </div>
-                </td>
-                <td>
-                    <h4>
-                        <b>Pizza 1</b>
-                    </h4>
-                    <p>Ingrediens: Lök, Tomat, kyckling </p>
-                </td>
-                
-                <td>
-                    <img src="http://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png" class="img-circle" width="60">
-                </td>
-                <td>
-                    <h4>
-                        <b>Ramón Villa Awad</b>
-                    </h4>
-                    <a href="mailto:ramonvillaw@gmail.com">ramonvillaw@gmail.com</a>
-                </td>
-                <td>2 años</td>
-                <td>
-                    <div class="btn-group">
-                        <button class="btn btn-default" value="left" type="button">
-                            <i class="fa fa-fw s fa-remove"></i>Eliminar
-                        </button>
-                        <button class="btn btn-default" value="right" type="button">
-                            <i class="fa fa-fw fa-cog"></i>Configurar
-                        </button>
+                    <div class="col-md-8">@pizza.Name
+                        <br/>
+                    @pizza.Price
                     </div>
-                </td>
-            </tr>
-           
-           
+                    <div class="col-md-2">Bild</div>
+                </li>
+            </ul>
+        </div>
+    }
 
-            <tr>
-                
-                <td>
-                    <a href="#">
-                        <i class="fa fa-2x fa-fw fa-eye-slash"></i>
-                    </a>
-                </td>
-                <td>
-                    <h4>
-                        <b>Supervisora</b>
-                    </h4>
-                    <p>claudiaramos</p>
-                </td>
-                <td>
-                    <img src="http://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png" class="img-circle" width="60">
-                </td>
-                <td>
-                    <h4>
-                        <b>Claudia Ramos</b>
-                    </h4>
-                    <a href="mailto:claudia@mail.com">claudia@mail.com</a>
-                </td>
-                <td>3 años</td>
-                <td>
-                    <div class="btn-group">
-                        <button class="btn btn-default" value="left" type="button">
-                            <i class="fa fa-fw s fa-remove"></i>Eliminar
-                        </button>
-                        <button class="btn btn-default" value="right" type="button">
-                            <i class="fa fa-fw fa-cog"></i>Configurar
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="#">
-                        <i class="fa fa-2x fa-fw fa-eye"></i>
-                    </a>
-                </td>
-                <td>
-                    <h4>
-                        <b>Gerente de capacitación</b>
-                    </h4>
-                    <p>anaojeda</p>
-                </td>
-                <td>
-                    <img src="http://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png" class="img-circle" width="60">
-                </td>
-                <td>
-                    <h4>
-                        <b>Ana Isabel Ojeda</b>
-                    </h4>
-                    <a href="mailto:ana@mail.com">ana@mail.com</a>
-                </td>
-                <td>1 mes</td>
-                <td>
-                    <div class="btn-group">
-                        <button class="btn btn-default" value="left" type="button">
-                            <i class="fa fa-fw s fa-remove"></i>Eliminar
-                        </button>
-                        <button class="btn btn-default" value="right" type="button">
-                            <i class="fa fa-fw fa-cog"></i>Configurar
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="#">
-                        <i class="fa fa-2x fa-fw -alt fa-eye-slash"></i>
-                    </a>
-                </td>
-                <td>
-                    <h4>
-                        <b>Director de Recursos Humanos</b>
-                    </h4>
-                    <p>Carlos Enciso</p>
-                </td>
-                <td>
-                    <img src="http://pingendo.github.io/pingendo-bootstrap/assets/user_placeholder.png" class="img-circle" width="60">
-                </td>
-                <td>
-                    <h4>
-                        <b>Carlos Enciso</b>
-                    </h4>
-                    <a href="mailto: carlos@mail.com"> carlos@mail.com</a>
-                </td>
-                <td>5 años</td>
-                <td>
-                    <div class="btn-group">
-                        <button class="btn btn-default" value="left" type="button">
-                            <i class="fa fa-fw s fa-remove"></i>Eliminar
-                        </button>
-                        <button class="btn btn-default" value="right" type="button">
-                            <i class="fa fa-fw fa-cog"></i>Configurar
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
 </div>
  
 
