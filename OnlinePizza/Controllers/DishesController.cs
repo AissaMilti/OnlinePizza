@@ -25,9 +25,10 @@ namespace OnlinePizza.Controllers
             return View(await _context.Dishes.ToListAsync());
         }
 
-        public async Task<IActionResult> TestMenu()
+        public IActionResult Menu()
         {
-            return View(await _context.Dishes.ToListAsync());
+
+            return View(_context.Dishes.Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient).ToList());
         }
 
         // GET: Dishes/Details/5
