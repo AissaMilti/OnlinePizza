@@ -32,6 +32,11 @@ namespace OnlinePizza.Data
 
             if (!context.Dishes.Any())
             {
+                //Categories
+                var pizza = new Category {Name = "Pizza"};               
+                var pastaDishes = new Category {Name = "Pasta"};
+                var sallad = new Category {Name = "Sallad"};
+
                 var cheese = new Ingredient { Name = "Cheese" };
                 var tomato = new Ingredient { Name = "Tomato" };
                 var ham = new Ingredient { Name = "Ham" };
@@ -48,6 +53,9 @@ namespace OnlinePizza.Data
                 //Pasta
                 var pastaAlfredo = new Dish {Name = "Pasta Alfredo", Price = 90};
 
+                //Sallad
+                var ceasarSallad = new Dish {Name = "Ceasarsallad", Price = 75};
+
                 var margaritaCheese = new DishIngredient { Dish = margarita, Ingredient = cheese };
                 var margaritaHam = new DishIngredient { Dish = margarita, Ingredient = ham };
 
@@ -62,6 +70,12 @@ namespace OnlinePizza.Data
                 var alfredoChicken = new DishIngredient {Dish = pastaAlfredo, Ingredient = chicken};
                 var alfredoPasta = new DishIngredient {Dish = pastaAlfredo, Ingredient = pasta};
 
+                var ceasarSalladChicken = new DishIngredient {Dish = ceasarSallad, Ingredient = chicken};
+
+                pizza.Dishes = new List<Dish> { kebabPizza, capricciosa, hawaii };
+                pastaDishes.Dishes = new List<Dish>{ pastaAlfredo};
+                sallad.Dishes = new List<Dish>{ ceasarSallad};
+
 
 
                 capricciosa.DishIngredients = new List<DishIngredient> { capricciosaCheese, capricciosaTomato };
@@ -69,11 +83,14 @@ namespace OnlinePizza.Data
                 hawaii.DishIngredients = new List<DishIngredient> { hawaiiCheese };
                 kebabPizza.DishIngredients = new List<DishIngredient>{kebabTomato, kebabGarlicSauce};
                 pastaAlfredo.DishIngredients = new List<DishIngredient>{alfredoPasta, alfredoChicken};
+                ceasarSallad.DishIngredients = new List<DishIngredient>{ceasarSalladChicken};
 
                 context.AddRange(tomato, ham, cheese);
 
                 context.DishIngredients.AddRange(margaritaCheese, hawaiiCheese, capricciosaCheese, capricciosaTomato, margaritaHam, kebabGarlicSauce, kebabTomato, alfredoPasta, alfredoChicken);
                 context.AddRange(capricciosa, margarita, hawaii, kebabPizza, pastaAlfredo);
+                context.AddRange(pizza, pastaDishes, sallad);
+              
                 context.SaveChanges();
             }
         }

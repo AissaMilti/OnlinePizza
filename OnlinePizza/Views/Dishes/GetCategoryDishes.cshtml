@@ -1,0 +1,36 @@
+﻿@model System.Collections.Generic.List<OnlinePizza.Models.Category>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div>w
+    @foreach (var i in Model)
+    {
+        <p><b >@i.Name</b></p>
+       
+        foreach (var p in i.Dishes)
+        {
+            <p>@p.Name</p>
+            @*<p>@p.DishIngredients</p>*@
+            
+
+            foreach (var x in p.DishIngredients)
+            {
+                <p>@x.Ingredient.Name</p>
+
+            }
+            <p>@p.Price</p>
+        }
+
+    }
+</div>
+</body>
+</html>

@@ -64,6 +64,7 @@ namespace OnlinePizza
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Dishes}/{action=Menu}/{id?}");
+            //template: "{controller=Categories}/{action=GetCategoryDishes}/{id?}");
             });
 
             DbInitializer.Initialize(userManager, context, roleManager);

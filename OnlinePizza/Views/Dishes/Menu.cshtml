@@ -1,36 +1,48 @@
 ﻿@*@model OnlinePizza.Models.Dish*@
-@model System.Collections.Generic.IEnumerable<OnlinePizza.Models.Dish>
+@model System.Collections.Generic.IEnumerable<OnlinePizza.Models.Category>
 @{
     ViewData["Title"] = "Meny";
 }
 
-<h2>TestMenu</h2>
+<h2>Meny</h2>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <div class="row">
     
-    @foreach (var pizza in Model)
+    @foreach (var category in Model)
     {
-        <div class="col-md-6">
-            <ul class="list-group">
-                <li class="list-group-item row">
-                    <div class="col-md-2">
-                        <a href="#">
-                            <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                    <div class="col-md-9">
-                        <span style="width: 200px; display: inline-block" ><b>@pizza.Name </b></span>
-                        <span style="margin-left: 100px">@pizza.Price kr</span> <br/>
-                        @foreach (var d in pizza.DishIngredients)
+        <div class="col-md-12">
+            <h2>@category.Name</h2></div>
+      
+                        @*<span style="width: 200px; display: inline-block" ><b>@pizza.Name </b></span>*@
+                        @*<span style="margin-left: 100px">@pizza.Price kr</span> <br/>*@
+                        foreach (var d in category.Dishes)
                         {
-                            <span>@d.Ingredient.Name</span>
-                        }
-                    </div>
-                    <div class="col-md-1">Bild</div>
-                </li>
-            </ul>
-        </div>
-    }
+
+                            <div class="col-md-6">
+                                <ul class="list-group">
+                                    <li class="list-group-item row">
+                                        <div class="col-md-2">
+                                            <a href="#">
+                                                <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+                                            </a>
+                           </div>
+                                        <div class="col-md-9">
+                            <span style="width: 200px; display: inline-block" >@d.Name</span>
+                            <span style="margin-left: 100px">@d.Price</span> <br />
+
+                            @foreach (var f in d.DishIngredients)
+                             {
+                                 <span >@f.Ingredient.Name</span>
+                             }
+                                            
+                                   </div>
+                                        <div class="col-md-1">Bild</div>
+                                    </li>
+                                </ul>
+                            </div>
+                         }
+           
+     }
     
 </div>
  

@@ -19,17 +19,26 @@ namespace OnlinePizza.Controllers
             _context = context;
         }
 
+        public IActionResult Menu()
+        {
+            var categoryDish = _context.Categories.Include(x => x.Dishes).ThenInclude(z => z.DishIngredients)
+                .ThenInclude(y => y.Ingredient).ToList();
+
+            return View(categoryDish);
+        }
+
+
         // GET: Dishes
         public async Task<IActionResult> Index()
         {
             return View(await _context.Dishes.ToListAsync());
         }
 
-        public IActionResult Menu()
-        {
+        //public IActionResult Menu()
+        //{
 
-            return View(_context.Dishes.Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient).ToList());
-        }
+        //    return View(_context.Dishes.Include(d => d.DishIngredients).ThenInclude(di => di.Ingredient).ToList());
+        //}
 
         // GET: Dishes/Details/5
         public async Task<IActionResult> Details(int? id)
