@@ -7,45 +7,73 @@
 <h2>Meny</h2>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 <div class="row">
-    
+
     @foreach (var category in Model)
     {
         <div class="col-md-12">
-            <h2>@category.Name</h2></div>
-      
-                        @*<span style="width: 200px; display: inline-block" ><b>@pizza.Name </b></span>*@
-                        @*<span style="margin-left: 100px">@pizza.Price kr</span> <br/>*@
-                        foreach (var d in category.Dishes)
+            <h2>@category.Name</h2>
+        </div>
+
+        @*<span style="width: 200px; display: inline-block" ><b>@pizza.Name </b></span>*@
+        @*<span style="margin-left: 100px">@pizza.Price kr</span> <br/>*@
+    foreach (var d in category.Dishes)
+    {
+
+        <div class="col-md-6">
+            <ul class="list-group">
+                <li class="list-group-item row">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="col-md-1">
+                            <a href="#">
+                                <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+                            </a>
+
+                        </div>
+
+                        <div class="col-md-1">
+                            <a href="#">
+                                <i class="fa fa-cog" aria-hidden="true"></i>
+                            </a>
+                            <a href="#">
+                                <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-2">
+                            <a href="#">
+                                <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+                            </a>
+
+                        </div>
+
+
+                    }
+                    <div class="col-md-9">
+                        <span style="width: 200px; display: inline-block">@d.Name</span>
+                        <span style="margin-left: 100px">@d.Price</span> <br />
+
+
+                        @foreach (var f in d.DishIngredients)
                         {
+                            <span>@f.Ingredient.Name</span>
+                        }
 
-                            <div class="col-md-6">
-                                <ul class="list-group">
-                                    <li class="list-group-item row">
-                                        <div class="col-md-2">
-                                            <a href="#">
-                                                <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
-                                            </a>
-                           </div>
-                                        <div class="col-md-9">
-                            <span style="width: 200px; display: inline-block" >@d.Name</span>
-                            <span style="margin-left: 100px">@d.Price</span> <br />
 
-                            @foreach (var f in d.DishIngredients)
-                             {
-                                 <span >@f.Ingredient.Name</span>
-                             }
-                                            
-                                   </div>
-                                        <div class="col-md-1">Bild</div>
-                                    </li>
-                                </ul>
-                            </div>
-                         }
-           
-     }
-    
+
+                    </div>
+                    <div class="col-md-1">Bild</div>
+                </li>
+            </ul>
+        </div>
+        }
+
+    }
+
 </div>
- 
 
-    
+
+
 
