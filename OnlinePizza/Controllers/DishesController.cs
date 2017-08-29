@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OnlinePizza.Data;
 using OnlinePizza.Models;
+using OnlinePizza.Services;
 
 namespace OnlinePizza.Controllers
 {
     public class DishesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly DishService _dishService;
 
-        public DishesController(ApplicationDbContext context)
+        public DishesController(ApplicationDbContext context, DishService dishService)
         {
             _context = context;
+            _dishService = dishService;
         }
 
         public IActionResult Menu()
@@ -49,7 +52,7 @@ namespace OnlinePizza.Controllers
             }
 
             var dish = await _context.Dishes
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.DishId == id);
             if (dish == null)
             {
                 return NotFound();
@@ -61,6 +64,7 @@ namespace OnlinePizza.Controllers
         // GET: Dishes/Create
         public IActionResult Create()
         {
+            var catList = _dishService.GetAllCategories();
             return View();
         }
 
@@ -69,13 +73,14 @@ namespace OnlinePizza.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Price")] Dish dish)
+        public async Task<IActionResult> Create([Bind("DishId,Name,Price, CategoryId")] Dish dish)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(dish);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Menu));
             }
             return View(dish);
         }
@@ -88,7 +93,7 @@ namespace OnlinePizza.Controllers
                 return NotFound();
             }
 
-            var dish = await _context.Dishes.SingleOrDefaultAsync(m => m.Id == id);
+            var dish = await _context.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
             if (dish == null)
             {
                 return NotFound();
@@ -101,9 +106,9 @@ namespace OnlinePizza.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Price")] Dish dish)
+        public async Task<IActionResult> Edit(int id, [Bind("DishId,Name,Price")] Dish dish)
         {
-            if (id != dish.Id)
+            if (id != dish.DishId)
             {
                 return NotFound();
             }
@@ -117,7 +122,7 @@ namespace OnlinePizza.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DishExists(dish.Id))
+                    if (!DishExists(dish.DishId))
                     {
                         return NotFound();
                     }
@@ -140,7 +145,7 @@ namespace OnlinePizza.Controllers
             }
 
             var dish = await _context.Dishes
-                .SingleOrDefaultAsync(m => m.Id == id);
+                .SingleOrDefaultAsync(m => m.DishId == id);
             if (dish == null)
             {
                 return NotFound();
@@ -154,7 +159,7 @@ namespace OnlinePizza.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var dish = await _context.Dishes.SingleOrDefaultAsync(m => m.Id == id);
+            var dish = await _context.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
             _context.Dishes.Remove(dish);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -162,7 +167,7 @@ namespace OnlinePizza.Controllers
 
         private bool DishExists(int id)
         {
-            return _context.Dishes.Any(e => e.Id == id);
+            return _context.Dishes.Any(e => e.DishId == id);
         }
 
         //public IActionResult TestMenu()

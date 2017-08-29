@@ -20,7 +20,7 @@ namespace OnlinePizza.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<string>("DishId");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
@@ -31,7 +31,7 @@ namespace OnlinePizza.Data.Migrations
                     b.Property<string>("NormalizedName")
                         .HasAnnotation("MaxLength", 256);
 
-                    b.HasKey("Id");
+                    b.HasKey("DishId");
 
                     b.HasIndex("NormalizedName")
                         .HasName("RoleNameIndex");
@@ -41,7 +41,7 @@ namespace OnlinePizza.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DishId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClaimType");
@@ -51,7 +51,7 @@ namespace OnlinePizza.Data.Migrations
                     b.Property<string>("RoleId")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("DishId");
 
                     b.HasIndex("RoleId");
 
@@ -60,7 +60,7 @@ namespace OnlinePizza.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DishId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClaimType");
@@ -70,7 +70,7 @@ namespace OnlinePizza.Data.Migrations
                     b.Property<string>("UserId")
                         .IsRequired();
 
-                    b.HasKey("Id");
+                    b.HasKey("DishId");
 
                     b.HasIndex("UserId");
 
@@ -127,7 +127,7 @@ namespace OnlinePizza.Data.Migrations
 
             modelBuilder.Entity("OnlinePizza.Models.ApplicationUser", b =>
                 {
-                    b.Property<string>("Id");
+                    b.Property<string>("DishId");
 
                     b.Property<int>("AccessFailedCount");
 
@@ -162,7 +162,7 @@ namespace OnlinePizza.Data.Migrations
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
 
-                    b.HasKey("Id");
+                    b.HasKey("DishId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");

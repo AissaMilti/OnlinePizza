@@ -37,12 +37,13 @@ namespace OnlinePizza
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<RoleManager<IdentityRole>>();
+            services.AddTransient<DishService>();
 
             services.AddMvc();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager, DishService dishService)
         {
             if (env.IsDevelopment())
             {
@@ -67,7 +68,7 @@ namespace OnlinePizza
             //template: "{controller=Categories}/{action=GetCategoryDishes}/{id?}");
             });
 
-            DbInitializer.Initialize(userManager, context, roleManager);
+            DbInitializer.Initialize(userManager, context, roleManager, dishService);
         }
     }
 }

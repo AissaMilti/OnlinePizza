@@ -32,7 +32,7 @@
                         </div>
 
                         <div class="col-md-1">
-                            <a href="#">
+                            <a asp-action="Edit" asp-controller="Dishes" asp-route-id="@d.DishId">
                                 <i class="fa fa-cog" aria-hidden="true"></i>
                             </a>
                             <a href="#">
@@ -48,21 +48,15 @@
                             </a>
 
                         </div>
-
-
                     }
                     <div class="col-md-9">
                         <span style="width: 200px; display: inline-block">@d.Name</span>
                         <span style="margin-left: 100px">@d.Price</span> <br />
 
-
                         @foreach (var f in d.DishIngredients)
                         {
                             <span>@f.Ingredient.Name</span>
                         }
-
-
-
                     </div>
                     <div class="col-md-1">Bild</div>
                 </li>

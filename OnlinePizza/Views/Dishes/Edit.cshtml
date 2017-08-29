@@ -1,18 +1,21 @@
 ﻿@model OnlinePizza.Models.Dish
+@*@model OnlinePizza.Models.Category*@
 
 @{
     ViewData["Title"] = "Edit";
 }
 
 <h2>Edit</h2>
-
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
 <h4>Dish</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="DishId" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -31,7 +34,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Menu">Back to List</a>
 </div>
 
 @section Scripts {

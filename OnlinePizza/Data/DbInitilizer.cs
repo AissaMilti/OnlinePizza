@@ -4,12 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using OnlinePizza.Models;
+using OnlinePizza.Services;
 
 namespace OnlinePizza.Data
 {
     public class DbInitializer
     {
-        public static void Initialize(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager)
+        public static void Initialize(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager, DishService dishService)
         {
             var aUser = new ApplicationUser
             {
