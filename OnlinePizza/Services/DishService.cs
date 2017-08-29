@@ -29,6 +29,11 @@ namespace OnlinePizza.Services
             return allCategories;
         }
 
+        public List<Models.Ingredient> GetIngredients()
+        {
+            return _context.Ingredients.ToList();
+        }
+
        
     }
 }

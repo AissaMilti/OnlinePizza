@@ -65,7 +65,9 @@ namespace OnlinePizza.Controllers
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return RedirectToLocal(returnUrl);
+                    //return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Menu", "Dishes");
+
                 }
                 if (result.RequiresTwoFactor)
                 {

@@ -64,7 +64,7 @@ namespace OnlinePizza.Controllers
         // GET: Dishes/Create
         public IActionResult Create()
         {
-            var catList = _dishService.GetAllCategories();
+            //var catList = _dishService.GetAllCategories();
             return View();
         }
 
@@ -79,8 +79,8 @@ namespace OnlinePizza.Controllers
             {
                 _context.Add(dish);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-                //return RedirectToAction(nameof(Menu));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Menu));
             }
             return View(dish);
         }
@@ -106,7 +106,7 @@ namespace OnlinePizza.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DishId,Name,Price")] Dish dish)
+        public async Task<IActionResult> Edit(int id, [Bind("DishId,Name,Price, CategoryId")] Dish dish)
         {
             if (id != dish.DishId)
             {

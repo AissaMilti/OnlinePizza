@@ -14,60 +14,54 @@
             <h2>@category.Name</h2>
         </div>
 
-        @*<span style="width: 200px; display: inline-block" ><b>@pizza.Name </b></span>*@
-        @*<span style="margin-left: 100px">@pizza.Price kr</span> <br/>*@
-    foreach (var d in category.Dishes)
-    {
+        foreach (var d in category.Dishes)
+        {
 
-        <div class="col-md-6">
-            <ul class="list-group">
-                <li class="list-group-item row">
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <div class="col-md-1">
-                            <a href="#">
-                                <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
-                            </a>
-
-                        </div>
-
-                        <div class="col-md-1">
-                            <a asp-action="Edit" asp-controller="Dishes" asp-route-id="@d.DishId">
-                                <i class="fa fa-cog" aria-hidden="true"></i>
-                            </a>
-                            <a href="#">
-                                <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
-                            </a>
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="col-md-2">
-                            <a href="#">
-                                <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
-                            </a>
-
-                        </div>
-                    }
-                    <div class="col-md-9">
-                        <span style="width: 200px; display: inline-block">@d.Name</span>
-                        <span style="margin-left: 100px">@d.Price</span> <br />
-
-                        @foreach (var f in d.DishIngredients)
+            <div class="col-md-6">
+                <ul class="list-group">
+                    <li class="list-group-item row">
+                        @if (User.IsInRole("Admin"))
                         {
-                            <span>@f.Ingredient.Name</span>
+                            <div class="col-md-1">
+                                <a href="#">
+                                    <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+                                </a>
+
+                            </div>
+
+                            <div class="col-md-1">
+                                <a asp-action="Edit" asp-controller="Dishes" asp-route-id="@d.DishId">
+                                    <i class="fa fa-cog" aria-hidden="true"></i>
+                                </a>
+                                <a asp-action="Delete" asp-controller="Dishes" asp-route-id="@d.DishId">
+                                    <i class="fa fa-trash" aria-hidden="true" style="color: red"></i>
+                                </a>
+                            </div>
                         }
-                    </div>
-                    <div class="col-md-1">Bild</div>
-                </li>
-            </ul>
-        </div>
+                        else
+                        {
+                            <div class="col-md-2">
+                                <a href="#">
+                                    <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+                                </a>
+
+                            </div>
+                        }
+                        <div class="col-md-9">
+                            <span style="width: 200px; display: inline-block"><b>@d.Name</b></span>
+                            <span style="margin-left: 100px">@d.Price kr</span> <br />
+
+                            @foreach (var f in d.DishIngredients)
+                            {
+                                <span>@f.Ingredient.Name</span>
+                            }
+                        </div>
+                        <div class="col-md-1">Bild</div>
+                    </li>
+                </ul>
+            </div>
         }
 
     }
 
 </div>
-
-
-
-

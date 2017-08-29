@@ -1,5 +1,6 @@
 ﻿@model OnlinePizza.Models.Dish
 @*@model OnlinePizza.Models.Category*@
+@inject OnlinePizza.Services.DishService _DishService
 
 @{
     ViewData["Title"] = "Edit";
@@ -14,20 +15,39 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
+            <div class="form-group">
+                <select class="form-control" name="CategoryId">
+                    @foreach (var i in _DishService.GetAllCategories())
+                    {
+                        <option  value="@i.CategoryId">@i.Name</option>
+                    }
+                        
+                </select>
+            </div>
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="DishId" />
+            <input type="hidden" asp-for="DishId"/>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <input asp-for="Name" class="form-control"/>
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
+                <input asp-for="Price" class="form-control"/>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                @foreach (var ingredient in _DishService.GetIngredients())
+                {
+                    <input type="checkbox" name="@ingredient.Id"/>
+                    <label asp-for="@ingredient.Name">@ingredient.Name</label>
+                }
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-success"/>
             </div>
         </form>
     </div>
