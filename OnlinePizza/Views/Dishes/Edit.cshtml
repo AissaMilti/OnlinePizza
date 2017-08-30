@@ -1,6 +1,7 @@
 ﻿@model OnlinePizza.Models.Dish
 @*@model OnlinePizza.Models.Category*@
 @inject OnlinePizza.Services.DishService _DishService
+@inject OnlinePizza.Services.IngredientService _IngredientService
 
 @{
     ViewData["Title"] = "Edit";
@@ -13,7 +14,6 @@
 <h4>Dish</h4>
 <hr />
 <div class="row">
-    @*<div class="col-md-3 col-md-offset-4"*@
     <div style="width: 265.5px; margin: auto">
         <form asp-action="Edit">
             <div class="form-group">
@@ -28,26 +28,16 @@
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="DishId" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+     
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input asp-for="Name" class="mdl-textfield__input" type="text"/>
+                <label asp-for="Name" class="mdl-textfield__label" for="sample3">Dish name</label>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-
-                <span asp-validation-for="Price" class="text-danger"></span>
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input asp-for="Price" class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?">
+                <label asp-for="Price" class="mdl-textfield__label" for="sample4">Price</label>
+                <span class="mdl-textfield__error">Input is not a number!</span>
             </div>
-
-            @*<div class="form-group">
-                    @foreach (var ingredient in _DishService.GetIngredients())
-                    {
-                        <input type="checkbox" name="@ingredient.IngredientId"/>
-                        <label asp-for="@ingredient.Name">@ingredient.Name</label>
-                    }
-                    <span asp-validation-for="Price" class="text-danger"></span>
-                </div>*@
 
             <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                 <thead>
@@ -60,7 +50,7 @@
 
 
                 <tbody>
-                    @foreach (var ingredient in _DishService.GetIngredients())
+                    @foreach (var ingredient in _IngredientService.GetIngredients())
                     {
                         <tr>
                             <td>
@@ -71,7 +61,7 @@
                             </td>
 
                             <td asp-for="@ingredient.Name">@ingredient.Name</td>
-                            <td>@ingredient.Price</td>
+                            <td>@ingredient.Price kr</td>
                         </tr>
                     }
                 </tbody>

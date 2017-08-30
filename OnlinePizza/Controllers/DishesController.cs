@@ -16,11 +16,13 @@ namespace OnlinePizza.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly DishService _dishService;
+        private readonly IngredientService _ingredientService;
 
-        public DishesController(ApplicationDbContext context, DishService dishService)
+        public DishesController(ApplicationDbContext context, DishService dishService, IngredientService ingredientService)
         {
             _context = context;
             _dishService = dishService;
+            _ingredientService = ingredientService;
         }
 
         public IActionResult Menu()
@@ -78,7 +80,7 @@ namespace OnlinePizza.Controllers
         {
             if (ModelState.IsValid)
             {
-                foreach (var i in _dishService.GetIngredients())
+                foreach (var i in _ingredientService.GetIngredients())
                 {
                     var dishIngredient = new DishIngredient()
                     {

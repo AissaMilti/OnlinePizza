@@ -38,6 +38,7 @@ namespace OnlinePizza
             services.AddTransient<UserManager<ApplicationUser>>();
             services.AddTransient<RoleManager<IdentityRole>>();
             services.AddTransient<DishService>();
+            services.AddTransient<IngredientService>();
 
             services.AddMvc();
         }
