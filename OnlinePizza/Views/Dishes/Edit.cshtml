@@ -13,41 +13,73 @@
 <h4>Dish</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    @*<div class="col-md-3 col-md-offset-4"*@
+    <div style="width: 265.5px; margin: auto">
         <form asp-action="Edit">
             <div class="form-group">
                 <select class="form-control" name="CategoryIngredientId">
                     @foreach (var i in _DishService.GetAllCategories())
                     {
-                        <option  value="@i.CategoryId">@i.Name</option>
+                        <option value="@i.CategoryId">@i.Name</option>
                     }
-                        
+
                 </select>
             </div>
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="DishId"/>
+            <input type="hidden" asp-for="DishId" />
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control"/>
+                <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control"/>
+                <input asp-for="Price" class="form-control" />
+
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
 
+            @*<div class="form-group">
+                    @foreach (var ingredient in _DishService.GetIngredients())
+                    {
+                        <input type="checkbox" name="@ingredient.IngredientId"/>
+                        <label asp-for="@ingredient.Name">@ingredient.Name</label>
+                    }
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>*@
+
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                    <tr>
+                        <th>Lägg till</th>
+                        <th>Ingredient</th>
+                        <th>Pris</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    @foreach (var ingredient in _DishService.GetIngredients())
+                    {
+                        <tr>
+                            <td>
+                                <label class="mdl-checkbox mdl-js-checkbox">
+                                    <input type="checkbox" class="mdl-checkbox__input" name="@ingredient.IngredientId">
+                                    @*<span class = "mdl-checkbox__label">Married</span>*@
+                                </label>
+                            </td>
+
+                            <td asp-for="@ingredient.Name">@ingredient.Name</td>
+                            <td>@ingredient.Price</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
             <div class="form-group">
-                @foreach (var ingredient in _DishService.GetIngredients())
-                {
-                    <input type="checkbox" name="@ingredient.IngredientId"/>
-                    <label asp-for="@ingredient.Name">@ingredient.Name</label>
-                }
-                <span asp-validation-for="Price" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-success"/>
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </form>
     </div>
