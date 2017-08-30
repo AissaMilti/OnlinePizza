@@ -57,21 +57,21 @@ namespace OnlinePizza.Data
                 //Sallad
                 var ceasarSallad = new Dish {Name = "Ceasarsallad", Price = 75};
 
-                var margaritaCheese = new DishIngredient { Dish = margarita, Ingredient = cheese };
-                var margaritaHam = new DishIngredient { Dish = margarita, Ingredient = ham };
+                var margaritaCheese = new DishIngredient { Dish = margarita, Ingredient = cheese, Enabled = true};
+                var margaritaHam = new DishIngredient { Dish = margarita, Ingredient = ham, Enabled = true };
 
-                var hawaiiCheese = new DishIngredient { Dish = hawaii, Ingredient = tomato };
+                var hawaiiCheese = new DishIngredient { Dish = hawaii, Ingredient = tomato, Enabled = true };
 
-                var capricciosaCheese = new DishIngredient { Dish = capricciosa, Ingredient = ham };
-                var capricciosaTomato = new DishIngredient { Dish = capricciosa, Ingredient = tomato };
+                var capricciosaCheese = new DishIngredient { Dish = capricciosa, Ingredient = ham, Enabled = true };
+                var capricciosaTomato = new DishIngredient { Dish = capricciosa, Ingredient = tomato, Enabled = true };
 
-                var kebabTomato = new DishIngredient {Dish = kebabPizza, Ingredient = tomato};
-                var kebabGarlicSauce = new DishIngredient {Dish = kebabPizza, Ingredient = garlicSauce};
+                var kebabTomato = new DishIngredient {Dish = kebabPizza, Ingredient = tomato, Enabled = true };
+                var kebabGarlicSauce = new DishIngredient {Dish = kebabPizza, Ingredient = garlicSauce, Enabled = true };
 
-                var alfredoChicken = new DishIngredient {Dish = pastaAlfredo, Ingredient = chicken};
-                var alfredoPasta = new DishIngredient {Dish = pastaAlfredo, Ingredient = pasta};
+                var alfredoChicken = new DishIngredient {Dish = pastaAlfredo, Ingredient = chicken, Enabled = true };
+                var alfredoPasta = new DishIngredient {Dish = pastaAlfredo, Ingredient = pasta, Enabled = true };
 
-                var ceasarSalladChicken = new DishIngredient {Dish = ceasarSallad, Ingredient = chicken};
+                var ceasarSalladChicken = new DishIngredient {Dish = ceasarSallad, Ingredient = chicken, Enabled = true };
 
                 pizza.Dishes = new List<Dish> { kebabPizza, capricciosa, hawaii };
                 pastaDishes.Dishes = new List<Dish>{ pastaAlfredo};

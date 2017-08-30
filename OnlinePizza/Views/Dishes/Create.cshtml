@@ -15,13 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="form-group">
-                    <select class="form-control" name="CategoryId">
-                        @foreach (var i in _DishService.GetAllCategories())
-                        {
-                            <option  value="@i.CategoryId">@i.Name</option>
-                        }
-                        
-                    </select>
+                <select style="width:100%" class="list-group-item" asp-for="CategoryId" asp-items="ViewBag.categoryList"></select>
             </div>
 
             <div class="form-group">
@@ -37,7 +31,7 @@
             <div class="form-group">
                 @foreach (var ingredient in _DishService.GetIngredients())
                 {
-                    <input type="checkbox" name="@ingredient.Id"/>
+                    <input type="checkbox" name="IngredientBox-@ingredient.IngredientId" value="@ingredient.IngredientId"/>
                     <label asp-for="@ingredient.Name">@ingredient.Name</label>
                 }
             </div>

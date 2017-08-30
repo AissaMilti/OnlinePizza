@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -62,22 +63,35 @@ namespace OnlinePizza.Controllers
         }
 
         // GET: Dishes/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id, Dish dish)
         {
-            //var catList = _dishService.GetAllCategories();
+            ViewData["categoryList"] = new SelectList(_context.Categories, "CategoryId", "Name", dish.CategoryId);
+
             return View();
         }
-
         // POST: Dishes/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DishId,Name,Price, CategoryId")] Dish dish)
+        public async Task<IActionResult> Create([Bind("DishId,Name,Price, CategoryId")] Dish dish, IFormCollection iFormCollection)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dish);
+                foreach (var i in _dishService.GetIngredients())
+                {
+                    var dishIngredient = new DishIngredient()
+                    {
+                        Ingredient = i,
+                        Dish = dish,
+                        Enabled = iFormCollection.Keys.Any(x => x == $"IngredientBox-{i.IngredientId}")
+
+                    };
+                    _context.DishIngredients.Add(dishIngredient);
+
+                }
+
+               // _context.Add(dish);
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
                 return RedirectToAction(nameof(Menu));

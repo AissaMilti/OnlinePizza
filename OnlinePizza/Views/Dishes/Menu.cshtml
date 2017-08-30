@@ -1,5 +1,6 @@
 ﻿@*@model OnlinePizza.Models.Dish*@
 @model System.Collections.Generic.IEnumerable<OnlinePizza.Models.Category>
+@inject OnlinePizza.Services.DishService _DishService
 @{
     ViewData["Title"] = "Meny";
 }
@@ -50,11 +51,13 @@
                         <div class="col-md-9">
                             <span style="width: 200px; display: inline-block"><b>@d.Name</b></span>
                             <span style="margin-left: 100px">@d.Price kr</span> <br />
+                            @_DishService.AllIngredientsForDish(d.DishId)
 
-                            @foreach (var f in d.DishIngredients)
+                            @*@foreach (var f in d.DishIngredients)
                             {
-                                <span>@f.Ingredient.Name</span>
-                            }
+                                @*<span>@f.Ingredient.Name</span>*@
+                               
+                            @*}*@
                         </div>
                         <div class="col-md-1">Bild</div>
                     </li>
