@@ -93,7 +93,6 @@ namespace OnlinePizza.Controllers
 
                // _context.Add(dish);
                 await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
                 return RedirectToAction(nameof(Menu));
             }
             return View(dish);
@@ -176,17 +175,12 @@ namespace OnlinePizza.Controllers
             var dish = await _context.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
             _context.Dishes.Remove(dish);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Menu));
         }
 
         private bool DishExists(int id)
         {
             return _context.Dishes.Any(e => e.DishId == id);
         }
-
-        //public IActionResult TestMenu()
-        //{
-        //    return View();
-        //}
     }
 }

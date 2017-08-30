@@ -38,12 +38,12 @@ namespace OnlinePizza.Data
                 var pastaDishes = new Category {Name = "Pasta"};
                 var sallad = new Category {Name = "Sallad"};
 
-                var cheese = new Ingredient { Name = "Cheese" };
-                var tomato = new Ingredient { Name = "Tomato" };
-                var ham = new Ingredient { Name = "Ham" };
-                var pasta = new Ingredient {Name = "Pasta"};
-                var chicken = new Ingredient {Name = "Chicken"};
-                var garlicSauce = new Ingredient {Name = "Garlic Sauce"};
+                var cheese = new Ingredient { Name = "Cheese", Price = 5};
+                var tomato = new Ingredient { Name = "Tomato", Price = 5 };
+                var ham = new Ingredient { Name = "Ham", Price = 5 };
+                var pasta = new Ingredient {Name = "Pasta", Price = 5 };
+                var chicken = new Ingredient {Name = "Chicken", Price = 5 };
+                var garlicSauce = new Ingredient {Name = "Garlic Sauce", Price = 5 };
 
                 //Pizza
                 var capricciosa = new Dish { Name = "Capricciosa", Price = 80 };

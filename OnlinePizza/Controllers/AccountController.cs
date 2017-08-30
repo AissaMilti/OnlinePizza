@@ -49,6 +49,7 @@ namespace OnlinePizza.Controllers
 
             ViewData["ReturnUrl"] = returnUrl;
             return View();
+           
         }
 
         [HttpPost]
@@ -69,6 +70,7 @@ namespace OnlinePizza.Controllers
                     return RedirectToAction("Menu", "Dishes");
 
                 }
+                
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToAction(nameof(LoginWith2fa), new { returnUrl, model.RememberMe });
