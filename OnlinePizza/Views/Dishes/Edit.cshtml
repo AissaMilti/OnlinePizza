@@ -16,7 +16,7 @@
 <div class="row">
     <div style="width: 265.5px; margin: auto">
         <form asp-action="Edit">
-            <div class="form-group">
+            <div class="mui-select">
                 <select class="form-control" name="CategoryIngredientId">
                     @foreach (var i in _DishService.GetAllCategories())
                     {
@@ -24,7 +24,7 @@
                     }
 
                 </select>
-            </div>
+                </div>
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="DishId" />
@@ -43,7 +43,7 @@
                 <thead>
                     <tr>
                         <th>Lägg till</th>
-                        <th>Ingredient</th>
+                        <th style="text-align: left">Ingredient</th>
                         <th>Pris</th>
                     </tr>
                 </thead>
@@ -60,7 +60,7 @@
                                 </label>
                             </td>
 
-                            <td asp-for="@ingredient.Name">@ingredient.Name</td>
+                            <td asp-for="@ingredient.Name" style="text-align: left">@ingredient.Name</td>
                             <td>@ingredient.Price kr</td>
                         </tr>
                     }

@@ -35,8 +35,5 @@ namespace OnlinePizza.Services
 
             return allIngredients;
         }
-
-
-
     }
 }

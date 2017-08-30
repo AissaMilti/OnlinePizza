@@ -14,8 +14,8 @@
     <div style="width: 265.5px; margin: auto">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="form-group">
+            
+            <div class="mui-select">
                 <select style="width:100%" class="list-group-item" asp-for="CategoryId" asp-items="ViewBag.categoryList"></select>
             </div>
 
