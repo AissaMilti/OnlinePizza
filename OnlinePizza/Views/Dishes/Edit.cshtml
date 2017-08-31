@@ -1,4 +1,5 @@
-﻿@model OnlinePizza.Models.Dish
+﻿@using System.Linq
+@model OnlinePizza.Models.Dish
 @*@model OnlinePizza.Models.Category*@
 @inject OnlinePizza.Services.DishService _DishService
 @inject OnlinePizza.Services.IngredientService _IngredientService
@@ -52,17 +53,36 @@
                 <tbody>
                     @foreach (var ingredient in _IngredientService.GetIngredients())
                     {
-                        <tr>
-                            <td>
-                                <label class="mdl-checkbox mdl-js-checkbox">
-                                    <input type="checkbox" class="mdl-checkbox__input" name="IngredientBox-@ingredient.IngredientId" value="@ingredient.IngredientId">
-                                    @*<span class = "mdl-checkbox__label">Married</span>*@
-                                </label>
-                            </td>
+                        if (Model.DishIngredients.Any(x => x.IngredientId == ingredient.IngredientId && x.Enabled))
+                        {
+                            <tr>
+                                <td>
+                                    <label class="mdl-checkbox mdl-js-checkbox">
+                                        <input type="checkbox" checked="checked" class="mdl-checkbox__input" name="IngredientBox-@ingredient.IngredientId" value="@ingredient.IngredientId">
+                                        @*<span class = "mdl-checkbox__label">Married</span>*@
+                                    </label>
+                                </td>
 
-                            <td asp-for="@ingredient.Name" style="text-align: left">@ingredient.Name</td>
-                            <td>@ingredient.Price kr</td>
-                        </tr>
+                                <td asp-for="@ingredient.Name" style="text-align: left">@ingredient.Name</td>
+                                <td>@ingredient.Price kr</td>
+                            </tr>
+                        }
+
+                        else
+                        {
+                            <tr>
+                                <td>
+                                    <label class="mdl-checkbox mdl-js-checkbox">
+                                        <input type="checkbox" class="mdl-checkbox__input" name="IngredientBox-@ingredient.IngredientId" value="@ingredient.IngredientId">
+                                        @*<span class = "mdl-checkbox__label">Married</span>*@
+                                    </label>
+                                </td>
+
+                                <td asp-for="@ingredient.Name" style="text-align: left">@ingredient.Name</td>
+                                <td>@ingredient.Price kr</td>
+                            </tr>
+                        }
+                        
                     }
                 </tbody>
             </table>

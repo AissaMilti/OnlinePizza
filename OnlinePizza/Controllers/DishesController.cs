@@ -108,11 +108,8 @@ namespace OnlinePizza.Controllers
                 return NotFound();
             }
 
-            var dish = await _context.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
+            var dish = await _context.Dishes.Include(m => m.DishIngredients).SingleOrDefaultAsync(x => x.DishId == id);
 
-
-        
-            
             if (dish == null)
             {
                 return NotFound();
@@ -138,9 +135,9 @@ namespace OnlinePizza.Controllers
                 { 
                     var dishToEdit = _context.Dishes.Include(x => x.DishIngredients).FirstOrDefault(x => x.DishId == id);
 
-
                     foreach (var ingre in dishToEdit.DishIngredients)
                     {
+
                         _context.Remove(ingre);
                     }
                     _context.SaveChanges();
@@ -172,7 +169,7 @@ namespace OnlinePizza.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Menu));
             }
             return View(dish);
         }
