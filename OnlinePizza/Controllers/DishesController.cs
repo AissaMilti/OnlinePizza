@@ -109,6 +109,10 @@ namespace OnlinePizza.Controllers
             }
 
             var dish = await _context.Dishes.SingleOrDefaultAsync(m => m.DishId == id);
+
+
+        
+            
             if (dish == null)
             {
                 return NotFound();
@@ -121,7 +125,7 @@ namespace OnlinePizza.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DishId,Name,Price, CategoryId")] Dish dish)
+        public async Task<IActionResult> Edit(int id, [Bind("DishId,Name,Price, CategoryId")] Dish dish, IFormCollection form)
         {
             if (id != dish.DishId)
             {
@@ -132,7 +136,29 @@ namespace OnlinePizza.Controllers
             {
                 try
                 {
-                    _context.Update(dish);
+                    var dishToEdit = _context.Dishes.Include(x => x.DishIngredients).FirstOrDefault(x => x.DishId == id);
+
+
+                    foreach (var ingre in dishToEdit.DishIngredients)
+                    {
+                        _context.Remove(ingre);
+                    }
+                    _context.SaveChanges();
+
+                    foreach (var i in _ingredientService.GetIngredients())
+                    {
+                        var dishIngredient = new DishIngredient()
+                        {
+                            Ingredient = i,
+                            Dish = dish,
+                            Enabled = form.Keys.Any(x => x == $"IngredientBox-{i.IngredientId}")
+
+                        };
+                        _context.DishIngredients.Add(dishIngredient);
+
+                    }
+
+                    //_context.Update(dish);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
