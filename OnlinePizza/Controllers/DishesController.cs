@@ -135,7 +135,7 @@ namespace OnlinePizza.Controllers
             if (ModelState.IsValid)
             {
                 try
-                {
+                { 
                     var dishToEdit = _context.Dishes.Include(x => x.DishIngredients).FirstOrDefault(x => x.DishId == id);
 
 
