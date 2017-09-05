@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNetCore.Http
+@using OnlinePizza.Services
+@model List<CartItem>
+@inject CartService CartService
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+
+    @foreach (var item in CartService.GetCartItems(Context))
+    {
+        <tr>
+            <td>
+                
+                @Html.DisplayFor(modelItem => item.Dish.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dish.Price) kr
+            </td>
+            <td>
+                @*<a asp-controller="Cart" asp-action="RemoveFromCart" asp-route-id="@item.CartItemID">Remove</a>*@
+            </td>
+        </tr>
+            
+    }
+    <tbody>
+    </tbody>
+</table>

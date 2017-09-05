@@ -3,16 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.8
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlinePizza", "OnlinePizza\OnlinePizza.csproj", "{B60DC14F-BF99-47CF-BDC9-F5E22A4DB0D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlinePizza", "OnlinePizza\OnlinePizza.csproj", "{B60DC14F-BF99-47CF-BDC9-F5E22A4DB0D7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Local_IIS|Any CPU = Local_IIS|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{B60DC14F-BF99-47CF-BDC9-F5E22A4DB0D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B60DC14F-BF99-47CF-BDC9-F5E22A4DB0D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B60DC14F-BF99-47CF-BDC9-F5E22A4DB0D7}.Local_IIS|Any CPU.ActiveCfg = Local_IIS|Any CPU
+		{B60DC14F-BF99-47CF-BDC9-F5E22A4DB0D7}.Local_IIS|Any CPU.Build.0 = Local_IIS|Any CPU
 		{B60DC14F-BF99-47CF-BDC9-F5E22A4DB0D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B60DC14F-BF99-47CF-BDC9-F5E22A4DB0D7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
