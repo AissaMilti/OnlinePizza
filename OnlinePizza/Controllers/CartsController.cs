@@ -142,34 +142,25 @@ namespace OnlinePizza.Controllers
         }
 
         // GET: Carts/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var cart = await _context.Carts
-                .SingleOrDefaultAsync(m => m.CartId == id);
+            var cart = await _context.CartItems
+                .SingleOrDefaultAsync(m => m.CartItemId == id);
             if (cart == null)
             {
                 return NotFound();
             }
 
-            return View(cart);
-        }
-
-        // POST: Carts/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var cart = await _context.Carts.SingleOrDefaultAsync(m => m.CartId == id);
-            _context.Carts.Remove(cart);
+            _context.CartItems.Remove(cart);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
+            return View("Index");
+        }
         private bool CartExists(int id)
         {
             return _context.Carts.Any(e => e.CartId == id);
