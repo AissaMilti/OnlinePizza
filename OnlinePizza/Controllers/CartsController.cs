@@ -142,22 +142,13 @@ namespace OnlinePizza.Controllers
         }
 
         // GET: Carts/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public IActionResult Delete(Guid? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var cart = await _context.CartItems
-                .SingleOrDefaultAsync(m => m.CartItemId == id);
-            if (cart == null)
-            {
-                return NotFound();
-            }
-
-            _context.CartItems.Remove(cart);
-            await _context.SaveChangesAsync();
+            _cartService.DeleteCartItem(id);
 
             return View("Index");
         }

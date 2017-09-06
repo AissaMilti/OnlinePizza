@@ -118,6 +118,15 @@ namespace OnlinePizza.Services
                 _context.SaveChangesAsync();
 
             }
+
+        }
+
+        public void DeleteCartItem(Guid? id)
+        { 
+            var cart = _context.CartItems.SingleOrDefault(m => m.CartItemId == id);
+          
+            _context.CartItems.Remove(cart);
+            _context.SaveChangesAsync();
         }
     }
 }
