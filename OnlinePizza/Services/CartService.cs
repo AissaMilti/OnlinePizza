@@ -31,11 +31,7 @@ namespace OnlinePizza.Services
 
             if (cartSession == null)
             {
-                var carts = _context.Carts.ToList();
-                var newId = httpContext.Session.GetInt32("Cart");
-                newId = carts.Count + 1;
-                cartItems = new List<CartItem>();
-
+                
                 return null;
             }
             else
@@ -44,7 +40,13 @@ namespace OnlinePizza.Services
 
                 var cartId = httpContext.Session.GetInt32("Cart");
 
-                cart = _context.Carts.Include(x => x.Items).ThenInclude(z => z.Dish).SingleOrDefault(y => y.CartId == cartId);
+                cart = _context.Carts.Include(c => c.Items)
+                    .ThenInclude(x => x.Dish)
+                    .Include(d => d.Items)
+                    .ThenInclude(x => x.CartItemIngredients)
+                    .ThenInclude(ci => ci.Ingredient)
+                    .FirstOrDefault(x => x.CartId.Equals(cartId));
+
                 cartItems = cart.Items;
 
             }
@@ -56,7 +58,8 @@ namespace OnlinePizza.Services
         {
             var cartSession = httpContext.Session.GetInt32("Cart");
 
-            Dish dishToAdd = _context.Dishes.Include(x => x.DishIngredients).ThenInclude(i => i.Ingredient).SingleOrDefault(d => d.DishId == dishId);
+            Dish dishToAdd = _context.Dishes.Include(x => x.DishIngredients).ThenInclude(i => i.Ingredient)
+                .SingleOrDefault(d => d.DishId == dishId);
             List<CartItemIngredient> cartItemIngredient = new List<CartItemIngredient>();
             CartItem cartItem = new CartItem();
 
@@ -68,20 +71,30 @@ namespace OnlinePizza.Services
                 int newId = carts.Count + 1;
                 var newCartItemID = Guid.NewGuid();
 
-                foreach (var item in dishToAdd.DishIngredients)
+                foreach (var item in dishToAdd.DishIngredients.Where(x => x.Enabled))
                 {
                     var newCartItemIngredient = new CartItemIngredient
                     {
                         CartItem = cartItem,
                         CartItemId = newCartItemID,
                         IngredientName = item.Ingredient.Name,
-                        CartItemIngredientPrice = item.Ingredient.Price
+                        CartItemIngredientPrice = item.Ingredient.Price,
+                        Enabled = true
                     };
 
                     cartItemIngredient.Add(newCartItemIngredient);
                 }
 
-                cartItems.Add(new CartItem { Dish = dishToAdd, CartId = newId, Cart = cart, CartItemIngredients = cartItemIngredient, CartItemId = newCartItemID });
+                cartItems.Add(new CartItem
+                {
+                    Dish = dishToAdd,
+                    CartId = newId,
+                    Cart = cart,
+                    CartItemIngredients = cartItemIngredient,
+                    CartItemId = newCartItemID,
+                    DishPrice = dishToAdd.Price,
+                    DishName = dishToAdd.Name
+                });
 
                 cart.CartId = newId;
                 cart.Items = cartItems;
@@ -94,12 +107,13 @@ namespace OnlinePizza.Services
             }
             else
             {
-                var cartID = httpContext.Session.GetInt32("Cart");
-                Cart cart = _context.Carts.Include(x => x.Items).ThenInclude(z => z.Dish).SingleOrDefault(y => y.CartId == cartID);
+                var cartId = httpContext.Session.GetInt32("Cart");
+                Cart cart = _context.Carts.Include(x => x.Items).ThenInclude(z => z.Dish)
+                    .SingleOrDefault(y => y.CartId == cartId);
 
                 var newCartItemId = Guid.NewGuid();
 
-                foreach (var item in dishToAdd.DishIngredients)
+                foreach (var item in dishToAdd.DishIngredients.Where(x => x.Enabled))
                 {
                     var newCartItemIngredient = new CartItemIngredient
                     {
@@ -112,7 +126,14 @@ namespace OnlinePizza.Services
                     cartItemIngredient.Add(newCartItemIngredient);
                 }
 
-                cart.Items.Add(new CartItem { CartItemId = newCartItemId, Dish = dishToAdd, Cart = cart, CartId = cart.CartId, CartItemIngredients = cartItemIngredient });
+                cart.Items.Add(new CartItem
+                {
+                    CartItemId = newCartItemId,
+                    Dish = dishToAdd,
+                    Cart = cart,
+                    CartId = cart.CartId,
+                    CartItemIngredients = cartItemIngredient
+                });
 
                 _context.Carts.Update(cart);
                 _context.SaveChangesAsync();
@@ -122,11 +143,12 @@ namespace OnlinePizza.Services
         }
 
         public void DeleteCartItem(Guid? id)
-        { 
+        {
             var cart = _context.CartItems.SingleOrDefault(m => m.CartItemId == id);
-          
+
             _context.CartItems.Remove(cart);
             _context.SaveChangesAsync();
         }
+        
     }
 }

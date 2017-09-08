@@ -2,6 +2,7 @@
 @using OnlinePizza.Services
 @model List<CartItem>
 @inject CartService CartService
+@inject IngredientService IngredientService
 
 @{
     ViewData["Title"] = "Index";
@@ -20,12 +21,20 @@
             <td>
                 
                 @Html.DisplayFor(modelItem => item.Dish.Name)
+                
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Dish.Price) kr
+                @foreach (var i in item.CartItemIngredients)
+                {
+                    <p>@i.Ingredient.Name</p>
+                }
+                @IngredientService.AllIngredientsForDish(item.DishId)
+                
             </td>
             <td>
                 <a asp-controller="Carts" asp-action="Delete" asp-route-id="@item.CartItemId">Remove</a>
+                <a asp-controller="Carts" asp-action="Edit" asp-route-id="@item.CartItemId">Edit</a>
             </td>
         </tr>
             
