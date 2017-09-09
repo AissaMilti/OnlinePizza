@@ -1,6 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Http
 @using OnlinePizza.Services
-@model List<CartItem>
+@model List<OnlinePizza.Models.CartItem>
 @inject CartService CartService
 @inject IngredientService IngredientService
 
@@ -15,7 +15,7 @@
 </p>
 <table class="table">
 
-    @foreach (var item in CartService.GetCartItems(Context))
+    @*@foreach (var item in CartService.GetCartItems(Context))
     {
         <tr>
             <td>
@@ -23,36 +23,37 @@
                 @Html.DisplayFor(modelItem => item.Dish.Name)
                 
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Dish.Price) kr
-                @foreach (var i in item.CartItemIngredients)
+            <td>*@
+                @*@Html.DisplayFor(modelItem => item.Dish.Price) kr*@
+                @*@foreach (var i in item.CartItemIngredients)
                 {
                     <p>@i.Ingredient.Name</p>
-                }
-                @*@IngredientService.AllIngredientsForDish(item.DishId)*@
+                }*@
+              @*  @IngredientService.AllIngredientsForDish(item.DishId)*@
                 
-            </td>
+            @*</td>
             <td>
                 <a asp-controller="Carts" asp-action="Delete" asp-route-id="@item.CartItemId">Remove</a>
                 <a asp-controller="Carts" asp-action="Edit" asp-route-id="@item.CartItemId">Edit</a>
             </td>
         </tr>
             
-    }
+    }*@
     <tbody>
     </tbody>
 </table>
 
 <div class="row">
     <div style="width: 265.5px; margin: auto">
-        <form asp-action="Edit">
+        <form>
 
             <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                 <thead>
                 <tr>
-                    <th>Rätt</th>
+                    <th style="text-align: left">Rätt</th>
                     <th style="text-align: left">Ingredient</th>
                     <th>Pris</th>
+                    <th>Åtgärd</th>
                 </tr>
                 </thead>
 
@@ -62,25 +63,21 @@
                 {
 
                         <tr>
-                            <td>
-                                @item.Dish.Name
+                            <td style="text-align: left;">
+                                <b >@item.Dish.Name</b>
                                 
                             </td>
 
-                                <td style="text-align: left">@foreach (var i in item.CartItemIngredients)
+                                <td style="text-align: left">@foreach (var i in item.Dish.DishIngredients)
                                                              {
-                                                                 <p>@i.Ingredient.Name</p>
+                                                                 @i.Ingredient.Name
                                                              }</td>    
                             <td>@item.Dish.Price kr</td>
+                            <td><a asp-controller="Carts" asp-action="Delete" asp-route-id="@item.CartItemId">Remove</a></td>
                         </tr> 
                 }
                 </tbody>
             </table>
-
-
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-success" />
-            </div>
         </form>
     </div>
 </div>

@@ -16,34 +16,30 @@ namespace OnlinePizza.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly CartService _cartService;
+        private readonly IngredientService _ingredientService;
 
-        public CartsController(ApplicationDbContext context, CartService cartService)
+        public CartsController(ApplicationDbContext context, CartService cartService, IngredientService ingredientService)
         {
             _context = context;
             _cartService = cartService;
+            _ingredientService = ingredientService;
         }
 
         // GET: Carts
         public IActionResult Index()
         {
 
-            var isEmpty =_cartService.GetCartItems(HttpContext);
-            if (isEmpty == null)
-            {
-                return View("EmptyCart");
-            }
-            else
-            {
-                return View();
-            }
-            
+            var allCartItems = _cartService.GetCartItems(HttpContext);
+
+
+         return View("Index", allCartItems);
         }
 
         public IActionResult AddToCart(int dishId)
         {
-            _cartService.AddToCart(HttpContext, dishId);
+           var dishToAdd = _cartService.AddToCart(dishId, HttpContext);
 
-            return RedirectToAction("Index", "Carts");
+            return RedirectToAction("Index", dishToAdd);
         }
 
 
@@ -98,8 +94,9 @@ namespace OnlinePizza.Controllers
                 return NotFound();
             }
 
-            var cart = await _context.Carts.SingleOrDefaultAsync(m => m.CartId == id);
-            if (cart == null)
+            //var cart = await _context.Carts.SingleOrDefaultAsync(m => m.CartId == id);
+            var cart = _cartService.GetCartItems(HttpContext);
+            if (cart != null)
             {
                 return NotFound();
             }
@@ -141,7 +138,7 @@ namespace OnlinePizza.Controllers
             return View(cart);
         }
 
-        // GET: Carts/Delete/5
+       
         public IActionResult Delete(Guid? id)
         {
             if (id == null)
@@ -156,7 +153,11 @@ namespace OnlinePizza.Controllers
         {
             return _context.Carts.Any(e => e.CartId == id);
         }
-        
+
+
+
     }
-    
+
+
+
 }
