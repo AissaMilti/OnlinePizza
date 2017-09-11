@@ -22,6 +22,7 @@ namespace OnlinePizza.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly AccountService _accountService;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
 
@@ -29,12 +30,13 @@ namespace OnlinePizza.Controllers
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger, AccountService accountService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _accountService = accountService;
         }
 
         [TempData]
@@ -219,30 +221,32 @@ namespace OnlinePizza.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public IActionResult Register(ApplicationUser user /*RegisterViewModel model, string returnUrl = null*/)
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
+            //ViewData["ReturnUrl"] = returnUrl;
+            //if (ModelState.IsValid)
+            //{
+            //    var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            //    var result = await _userManager.CreateAsync(user, model.Password);
+            //    if (result.Succeeded)
+            //    {
+            //        _logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-                    await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+            //        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            //        var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+            //        await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    _logger.LogInformation("User created a new account with password.");
-                    return RedirectToLocal(returnUrl);
-                }
-                AddErrors(result);
-            }
+            //        await _signInManager.SignInAsync(user, isPersistent: false);
+            //        _logger.LogInformation("User created a new account with password.");
+            //        return RedirectToLocal(returnUrl);
+            //    }
+            //    AddErrors(result);
+            //}
+
+            _accountService.RegisterUser(user);
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+            return View();
         }
 
         [HttpPost]
