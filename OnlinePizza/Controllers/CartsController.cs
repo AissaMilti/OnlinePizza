@@ -28,16 +28,14 @@ namespace OnlinePizza.Controllers
         // GET: Carts
         public IActionResult Index()
         {
-
             var allCartItems = _cartService.GetCartItems(HttpContext);
 
-
-         return View("Index", allCartItems);
+            return View("Index", allCartItems);
         }
 
         public IActionResult AddToCart(int dishId)
         {
-           var dishToAdd = _cartService.AddToCart(dishId, HttpContext);
+            var dishToAdd = _cartService.AddToCart(dishId, HttpContext);
 
             return RedirectToAction("Index", dishToAdd);
         }
@@ -138,7 +136,7 @@ namespace OnlinePizza.Controllers
             return View(cart);
         }
 
-       
+
         public IActionResult Delete(Guid? id)
         {
             if (id == null)

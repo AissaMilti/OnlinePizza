@@ -16,31 +16,30 @@
 <table class="table">
 
     @*@foreach (var item in CartService.GetCartItems(Context))
-    {
-        <tr>
-            <td>
-                
-                @Html.DisplayFor(modelItem => item.Dish.Name)
-                
-            </td>
-            <td>*@
-                @*@Html.DisplayFor(modelItem => item.Dish.Price) kr*@
-                @*@foreach (var i in item.CartItemIngredients)
-                {
-                    <p>@i.Ingredient.Name</p>
-                }*@
-              @*  @IngredientService.AllIngredientsForDish(item.DishId)*@
-                
-            @*</td>
-            <td>
-                <a asp-controller="Carts" asp-action="Delete" asp-route-id="@item.CartItemId">Remove</a>
-                <a asp-controller="Carts" asp-action="Edit" asp-route-id="@item.CartItemId">Edit</a>
-            </td>
-        </tr>
-            
-    }*@
-    <tbody>
-    </tbody>
+        {
+            <tr>
+                <td>
+
+                    @Html.DisplayFor(modelItem => item.Dish.Name)
+
+                </td>
+                <td>*@
+    @*@Html.DisplayFor(modelItem => item.Dish.Price) kr*@
+    @*@foreach (var i in item.CartItemIngredients)
+        {
+            <p>@i.Ingredient.Name</p>
+        }*@
+    @*  @IngredientService.AllIngredientsForDish(item.DishId)*@
+
+    @*</td>
+                <td>
+                    <a asp-controller="Carts" asp-action="Delete" asp-route-id="@item.CartItemId">Remove</a>
+                    <a asp-controller="Carts" asp-action="Edit" asp-route-id="@item.CartItemId">Edit</a>
+                </td>
+            </tr>
+
+        }*@
+    <tbody></tbody>
 </table>
 
 <div class="row">
@@ -62,22 +61,27 @@
                 @foreach (var item in CartService.GetCartItems(Context))
                 {
 
-                        <tr>
-                            <td style="text-align: left;">
-                                <b >@item.Dish.Name</b>
-                                
-                            </td>
+                    <tr>
+                        <td style="text-align: left;">
+                            <b>@item.Dish.Name</b>
 
-                                <td style="text-align: left">@foreach (var i in item.Dish.DishIngredients)
-                                                             {
-                                                                 @i.Ingredient.Name
-                                                             }</td>    
-                            <td>@item.Dish.Price kr</td>
-                            <td><a asp-controller="Carts" asp-action="Delete" asp-route-id="@item.CartItemId">Remove</a></td>
-                        </tr> 
+                        </td>
+
+                        <td style="text-align: left">
+                            @foreach (var i in item.Dish.DishIngredients)
+                            {
+                                @i.Ingredient.Name
+                            }
+                        </td>
+                        <td>@item.Dish.Price kr</td>
+                        <td><a asp-controller="Carts" asp-action="Delete" asp-route-id="@item.CartItemId">Remove</a></td>
+                    </tr>
                 }
+                
                 </tbody>
             </table>
+            
+            <p>@CartService.TotalPrice(Context)</p>
         </form>
     </div>
 </div>
