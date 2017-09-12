@@ -25,7 +25,7 @@ namespace OnlinePizza.Services
                 PostalCode = applicationUser.PostalCode,
                 City = applicationUser.City,
                 UserEmail = applicationUser.UserEmail,
-                Password = applicationUser.Password,
+                UserPassword = applicationUser.UserPassword,
                 Phone = applicationUser.Phone
             };
 
