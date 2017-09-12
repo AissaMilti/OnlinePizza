@@ -11,13 +11,14 @@ namespace OnlinePizza.Models
     public class ApplicationUser : IdentityUser
     {
         public int UserId { get; set; }
+        
         public string Name { get; set; }
         public string Address { get; set; }
         public string PostalCode { get; set; }
         public string City { get; set; }
-        public string UserEmail { get; set; }
+        public string Email { get; set; }
         [DataType(DataType.Password)]
-        public string UserPassword { get; set; }
+        public string Password { get; set; }
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
         [Compare("UserPassword", ErrorMessage = "The password and confirmation password do not match.")]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using OnlinePizza.Data;
 using OnlinePizza.Models;
 
@@ -10,28 +11,24 @@ namespace OnlinePizza.Services
     public class AccountService
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountService(ApplicationDbContext context)
+        public AccountService(ApplicationDbContext context, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        public void RegisterUser(ApplicationUser applicationUser)
-        {
-            var user = new ApplicationUser
-            {
-                Name = applicationUser.Name,
-                Address = applicationUser.Address,
-                PostalCode = applicationUser.PostalCode,
-                City = applicationUser.City,
-                UserEmail = applicationUser.UserEmail,
-                UserPassword = applicationUser.UserPassword,
-                Phone = applicationUser.Phone
-            };
+        //public void RegisterUser(ApplicationUser applicationUser)
+        //{
+       
 
-            _context.ApplicationUsers.Add(user);
-            _context.SaveChanges();
-        }
+        //    _context.ApplicationUsers.Add(user);
+        //    _context.SaveChanges();
+
+        //}
 
     }
 }

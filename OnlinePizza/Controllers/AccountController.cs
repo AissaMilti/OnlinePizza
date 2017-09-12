@@ -221,29 +221,39 @@ namespace OnlinePizza.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public IActionResult Register(ApplicationUser user /*RegisterViewModel model, string returnUrl = null*/)
+        public async Task<IActionResult> Register(/*ApplicationUser applicationUser */RegisterViewModel register, string returnUrl = null)
         {
-            //ViewData["ReturnUrl"] = returnUrl;
-            //if (ModelState.IsValid)
-            //{
-            //    var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-            //    var result = await _userManager.CreateAsync(user, model.Password);
-            //    if (result.Succeeded)
-            //    {
-            //        _logger.LogInformation("User created a new account with password.");
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var user = new ApplicationUser
+                {
+                    UserName = register.Name,
+                    
+                    Address = register.Address,
+                    PostalCode = register.PostalCode,
+                    City = register.City,
+                    Email = register.Email,
+                    Password = register.Password,
+                 
+                };
+                var result = await _userManager.CreateAsync(user, register.Password);
+                if (result.Succeeded)
+                {
+                    _logger.LogInformation("User created a new account with password.");
 
-            //        var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            //        var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
-            //        await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+                    //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                    //await _emailSender.SendEmailConfirmationAsync(register.Email, callbackUrl);
 
-            //        await _signInManager.SignInAsync(user, isPersistent: false);
-            //        _logger.LogInformation("User created a new account with password.");
-            //        return RedirectToLocal(returnUrl);
-            //    }
-            //    AddErrors(result);
-            //}
-
-            _accountService.RegisterUser(user);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    _logger.LogInformation("User created a new account with password.");
+                    //return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Menu", "Dishes");
+                }
+                AddErrors(result);
+            }
+         
 
             // If we got this far, something failed, redisplay form
             return View();
