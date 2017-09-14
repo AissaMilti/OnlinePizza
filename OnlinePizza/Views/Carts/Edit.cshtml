@@ -18,40 +18,39 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CartItemId" />
             <div class="form-group">
-                
-             
-                @ViewBag.DishName
-                
-                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
-                <thead>
-                <tr>
-                    <th>Lägg till</th>
-                    <th style="text-align: left">Ingredient</th>
-                    <th>Pris</th>
-                </tr>
-                </thead>
-                
-                <tbody>
-                @foreach (var ingredient in _IngredientService.GetIngredients())
-                {
-                    var check = _CartService.HasIngredient(Model.CartItemId, ingredient.IngredientId) ? "checked" : "";
-                    <tr>
-                        <td>
-                            <label class="mdl-checkbox mdl-js-checkbox">
-                                <input type="checkbox" class="mdl-checkbox__input" name="IngredientBox-@ingredient.IngredientId" @check />
-                            </label>
-                        </td>
 
-                        <td asp-for="@ingredient.Name" style="text-align: left">@ingredient.Name</td>
-                        <td>@ingredient.Price kr</td>
-                    </tr>
-                }
-                </tbody>
-                    </table>
-              
+                @ViewBag.DishName
+
+                <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                    <thead>
+                        <tr>
+                            <th>Lägg till</th>
+                            <th style="text-align: left">Ingredient</th>
+                            <th>Pris</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var ingredient in _IngredientService.GetIngredients())
+                        {
+                            var check = _CartService.HasIngredient(Model.CartItemId, ingredient.IngredientId) ? "checked" : "";
+                            <tr>
+                                <td>
+                                    <label class="mdl-checkbox mdl-js-checkbox">
+                                        <input type="checkbox" class="mdl-checkbox__input" name="IngredientBox-@ingredient.IngredientId" @check />
+                                    </label>
+                                </td>
+
+                                <td asp-for="@ingredient.Name" style="text-align: left">@ingredient.Name</td>
+                                <td>@ingredient.Price kr</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
 
             </div>
-        
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>

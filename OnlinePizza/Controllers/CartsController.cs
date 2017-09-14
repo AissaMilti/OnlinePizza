@@ -88,11 +88,13 @@ namespace OnlinePizza.Controllers
         public ActionResult Edit(int id)
         {
 
-            //var item = _context.CartItems.Include(ci => ci.CartItemIngredients)
-            //    .ThenInclude(cii => cii.Ingredient).SingleOrDefault(c => c.CartItemId == id);
-
-            var item = _context.CartItems.Include(d => d.Cart).ThenInclude(s => s.Items)
-                .ThenInclude(f => f.Dish).ThenInclude(t => t.DishIngredients).ThenInclude(r => r.Ingredient).ThenInclude(g => g.CartItemIngredients)
+            var item = _context.CartItems
+                .Include(d => d.Cart)
+                .ThenInclude(s => s.Items)
+                .ThenInclude(f => f.Dish)
+                .ThenInclude(t => t.DishIngredients)
+                .ThenInclude(r => r.Ingredient)
+                .ThenInclude(g => g.CartItemIngredients)
                 .SingleOrDefault(y => y.CartItemId == id);
 
             ViewBag.DishName = item.Dish.Name;
@@ -105,86 +107,62 @@ namespace OnlinePizza.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, IFormCollection formCollection, [Bind("CartId,ApplicationId")] Cart cart)
+        public IActionResult Edit(int id, IFormCollection formCollection, [Bind("CartItemId, DishId")] CartItem cartItem)
         {
 
-            var dishItemToEdit = _context.CartItems
-                .Include(c => c.CartItemIngredients)
-                .ThenInclude(ci => ci.Ingredient)
-                .SingleOrDefault(c => c.CartItemId == id);
-
-
-            var cartId = HttpContext.Session.GetInt32("CartSession");
-
-
-            foreach (var ingre in dishItemToEdit.CartItemIngredients)
+            if (id != cartItem.CartItemId)
             {
-                _context.Remove(ingre);
+                return NotFound();
             }
-            _context.SaveChanges();
 
-            foreach (var i in _ingredientService.GetIngredients())
+            if (ModelState.IsValid)
             {
-                var cartItemIngredient = new CartItemIngredient()
+                try
                 {
-                    Ingredient = i,
-                    IngredientId = i.IngredientId,
-                    CartItemIngredientPrice = i.Price,
+                    var itemToEdit = _context.CartItems
+                        .Include(ci => ci.CartItemIngredients)
+                        .ThenInclude(cii => cii.Ingredient)
+                        .Include(d => d.Dish)
+                        .ThenInclude(di => di.DishIngredients)
+                        .ThenInclude(dii => dii.Ingredient) 
+                        .SingleOrDefault(m => m.CartItemId == id);
 
-                    Enabled = formCollection.Keys.Any(x => x == $"IngredientBox-{i.IngredientId}")
-
-                };
-                _context.CartItemIngredients.Add(cartItemIngredient);
-
-                var newPrice = 0;
-
-                _context.Update(dishItemToEdit);
-                var newCartItem = _context.CartItems.Include(d => d.Dish).ThenInclude(x => x.DishIngredients).SingleOrDefault(c => c.CartItemId == id);
-
-                //var di = _ingredientService.IngredentByDish(dish.DishId);
-                foreach (var dishIngredient in newCartItem.Dish.DishIngredients)
-                {
-                    foreach (var ing in dishItemToEdit.CartItemIngredients)
+                    foreach (var cartItemIngredient in itemToEdit.CartItemIngredients)
                     {
-                        if (ing.IngredientId != dishIngredient.IngredientId)
+                        _context.Remove(cartItemIngredient);
+                    }
+                    _context.SaveChangesAsync();
+                    itemToEdit.CartItemIngredients = new List<CartItemIngredient>();
+
+                    foreach (var ingredient in _ingredientService.GetIngredients())
+                    {
+                        var cartItemIngredient = new CartItemIngredient
                         {
-                            newPrice = +5;
-                        }
+                            Ingredient = ingredient,
+                            Enabled = formCollection.Keys.Any(x => x == $"IngredientBox-{ingredient.IngredientId}")
+                            ,
+                            CartItemIngredientPrice = ingredient.Price
+                        };
+                        itemToEdit.CartItemIngredients.Add(cartItemIngredient);
+                    }
+
+                    _context.SaveChangesAsync();
+
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!CartExists(cartItem.CartId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
                     }
                 }
-                dishItemToEdit.DishPrice = dishItemToEdit.DishPrice + newPrice;
-                _context.SaveChanges();
-
 
             }
-            //if (id != cart.CartId)
-            //{
-            //    return NotFound();
-            //}
-
-            //if (ModelState.IsValid)
-            //{
-            //    try
-            //    {
-            //        _context.Update(cart);
-            //        await _context.SaveChangesAsync();
-            //    }
-            //    catch (DbUpdateConcurrencyException)
-            //    {
-            //        if (!CartExists(cart.CartId))
-            //        {
-            //            return NotFound();
-            //        }
-            //        else
-            //        {
-            //            throw;
-            //        }
-            //    }
-            //    return RedirectToAction(nameof(Index));
-            //}
-
-            //_cartService.EditCartItemIngredients(id, formCollection);
-            return View();
+            return View(cartItem);
         }
 
 
