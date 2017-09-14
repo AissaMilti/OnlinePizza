@@ -30,7 +30,7 @@ namespace OnlinePizza.Controllers
         {
             var allCartItems = _cartService.GetCartItems(HttpContext);
 
-            return View("Index", allCartItems);
+            return View(allCartItems);
         }
 
         public IActionResult AddToCart(int dishId)
@@ -85,20 +85,19 @@ namespace OnlinePizza.Controllers
         }
 
         // GET: Carts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            //var cart = await _context.Carts.SingleOrDefaultAsync(m => m.CartId == id);
-            var cart = _cartService.GetCartItems(HttpContext);
-            if (cart != null)
-            {
-                return NotFound();
-            }
-            return View(cart);
+            //var item = _context.CartItems.Include(ci => ci.CartItemIngredients)
+            //    .ThenInclude(cii => cii.Ingredient).SingleOrDefault(c => c.CartItemId == id);
+
+            var item = _context.CartItems.Include(d => d.Cart).ThenInclude(s => s.Items)
+                .ThenInclude(f => f.Dish).ThenInclude(t => t.DishIngredients).ThenInclude(r => r.Ingredient).ThenInclude(g => g.CartItemIngredients)
+                .SingleOrDefault(y => y.CartItemId == id);
+
+            ViewBag.DishName = item.Dish.Name;
+
+            return View(item);
         }
 
         // POST: Carts/Edit/5
@@ -106,38 +105,90 @@ namespace OnlinePizza.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CartId,ApplicationId")] Cart cart)
+        public async Task<IActionResult> Edit(int id, IFormCollection formCollection, [Bind("CartId,ApplicationId")] Cart cart)
         {
-            if (id != cart.CartId)
-            {
-                return NotFound();
-            }
 
-            if (ModelState.IsValid)
+            var dishItemToEdit = _context.CartItems
+                .Include(c => c.CartItemIngredients)
+                .ThenInclude(ci => ci.Ingredient)
+                .SingleOrDefault(c => c.CartItemId == id);
+
+
+            var cartId = HttpContext.Session.GetInt32("CartSession");
+
+
+            foreach (var ingre in dishItemToEdit.CartItemIngredients)
             {
-                try
-                {
-                    _context.Update(cart);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CartExists(cart.CartId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Remove(ingre);
             }
-            return View(cart);
+            _context.SaveChanges();
+
+            foreach (var i in _ingredientService.GetIngredients())
+            {
+                var cartItemIngredient = new CartItemIngredient()
+                {
+                    Ingredient = i,
+                    IngredientId = i.IngredientId,
+                    CartItemIngredientPrice = i.Price,
+
+                    Enabled = formCollection.Keys.Any(x => x == $"IngredientBox-{i.IngredientId}")
+
+                };
+                _context.CartItemIngredients.Add(cartItemIngredient);
+
+                var newPrice = 0;
+
+                _context.Update(dishItemToEdit);
+                var newCartItem = _context.CartItems.Include(d => d.Dish).ThenInclude(x => x.DishIngredients).SingleOrDefault(c => c.CartItemId == id);
+
+                //var di = _ingredientService.IngredentByDish(dish.DishId);
+                foreach (var dishIngredient in newCartItem.Dish.DishIngredients)
+                {
+                    foreach (var ing in dishItemToEdit.CartItemIngredients)
+                    {
+                        if (ing.IngredientId != dishIngredient.IngredientId)
+                        {
+                            newPrice = +5;
+                        }
+                    }
+                }
+                dishItemToEdit.DishPrice = dishItemToEdit.DishPrice + newPrice;
+                _context.SaveChanges();
+
+
+            }
+            //if (id != cart.CartId)
+            //{
+            //    return NotFound();
+            //}
+
+            //if (ModelState.IsValid)
+            //{
+            //    try
+            //    {
+            //        _context.Update(cart);
+            //        await _context.SaveChangesAsync();
+            //    }
+            //    catch (DbUpdateConcurrencyException)
+            //    {
+            //        if (!CartExists(cart.CartId))
+            //        {
+            //            return NotFound();
+            //        }
+            //        else
+            //        {
+            //            throw;
+            //        }
+            //    }
+            //    return RedirectToAction(nameof(Index));
+            //}
+
+            //_cartService.EditCartItemIngredients(id, formCollection);
+            return View();
         }
 
 
-        public IActionResult Delete(Guid? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {

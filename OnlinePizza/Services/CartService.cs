@@ -26,21 +26,21 @@ namespace OnlinePizza.Services
 
         public List<CartItem> GetCartItems(HttpContext httpContext)
         {
-           
+
             var dish = _context.CartItems
                 .Include(c => c.Dish)
                 .ThenInclude(d => d.DishIngredients)
-                .ThenInclude(di => di.Ingredient)
+                .ThenInclude(di => di.Ingredient).Include(c => c.CartItemIngredients).ThenInclude(c => c.Ingredient)
                 .ToList();
-        
-       
+
+
             return dish;
         }
 
 
         public List<CartItem> AddToCart(int dishId, HttpContext httpContext)
         {
-            
+
 
             if (dishId == null)
             {
@@ -89,7 +89,9 @@ namespace OnlinePizza.Services
                 var cartItemIngredient = new CartItemIngredient
                 {
                     Ingredient = item.Ingredient,
-                    CartItem = cartItem
+                    CartItem = cartItem,
+                    Enabled = true,
+                    CartItemIngredientPrice = item.Ingredient.Price
                 };
                 cartItem.CartItemIngredients.Add(cartItemIngredient);
             }
@@ -118,7 +120,7 @@ namespace OnlinePizza.Services
             return totalPrice;
         }
 
-        public void DeleteCartItem(Guid? id)
+        public void DeleteCartItem(int? id)
         {
             var cart = _context.CartItems.SingleOrDefault(m => m.CartItemId == id);
 
@@ -126,10 +128,15 @@ namespace OnlinePizza.Services
             _context.SaveChangesAsync();
         }
 
+        public bool HasIngredient(int id, int ingredientId)
+        {
+            var item = _context.CartItemIngredients.Any(x => x.CartItemId == id && x.IngredientId == ingredientId && x.Enabled);
+
+            return item;
+        }
+
 
     }
 
 
 }
-
-

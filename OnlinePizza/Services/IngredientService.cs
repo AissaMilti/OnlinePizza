@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OnlinePizza.Data;
+using OnlinePizza.Models;
 
 namespace OnlinePizza.Services
 {
@@ -20,6 +21,11 @@ namespace OnlinePizza.Services
         public List<Models.Ingredient> GetIngredients()
         {
             return _context.Ingredients.ToList();
+        }
+
+        public List<CartItemIngredient> GetCartItemIngredients()
+        {
+            return _context.CartItemIngredients.ToList();
         }
 
         public string AllIngredientsForDish(int id)
