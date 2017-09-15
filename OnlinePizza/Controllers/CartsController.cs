@@ -162,7 +162,8 @@ namespace OnlinePizza.Controllers
                 }
 
             }
-            return View(cartItem);
+            return View("Index");
+           
         }
 
 

@@ -44,7 +44,7 @@
                         </td>
 
                         <td style="text-align: left">
-                            @foreach (var i in item.Dish.DishIngredients)
+                            @foreach (var i in item.CartItemIngredients.Where(x => x.Enabled))
                             {
                                 @i.Ingredient.Name
                             }
