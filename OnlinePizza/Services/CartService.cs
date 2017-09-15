@@ -123,6 +123,29 @@ namespace OnlinePizza.Services
             return totalPrice;
         }
 
+        public int GetExtraIngredientPrice(HttpContext httpContext, int dishId, int cartItemId)
+        {
+            var cartSession = httpContext.Session.GetInt32("CartSession");
+
+            var ingrePrice = 0;
+
+            var cart = _context.Carts.Include(x => x.Items).ThenInclude(x => x.CartItemIngredients).ThenInclude(x => x.Ingredient).FirstOrDefault(x => x.CartId == cartSession);
+
+            var cartIngredients = _context.CartItemIngredients.Include(x => x.Ingredient).Where(x => x.Enabled);
+
+            foreach (var itemPrice in cart.Items)
+            {
+
+                if (itemPrice.Dish.DishId == dishId)
+                {
+                    ingrePrice += itemPrice.CartItemIngredients.Where(s => s.Enabled && s.CartItemId == cartItemId).Sum(cii => itemPrice.Dish
+                        .DishIngredients
+                        .Any(di => di.IngredientId == cii.IngredientId) ? 0 : cii.Ingredient.Price);
+                }
+            }
+            return ingrePrice;
+        }
+
         public void DeleteCartItem(int? id)
         {
             var cart = _context.CartItems.SingleOrDefault(m => m.CartItemId == id);
