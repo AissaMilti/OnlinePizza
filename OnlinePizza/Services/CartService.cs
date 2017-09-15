@@ -109,7 +109,11 @@ namespace OnlinePizza.Services
 
             var totalPrice = 0;
 
-            var cart = _context.Carts.Include(x => x.Items).ThenInclude(x => x.CartItemIngredients).ThenInclude(x => x.Ingredient).FirstOrDefault(x => x.CartId == cartSession);
+            var cart = _context.Carts
+                .Include(x => x.Items)
+                .ThenInclude(x => x.CartItemIngredients)
+                .ThenInclude(x => x.Ingredient)
+                .FirstOrDefault(x => x.CartId == cartSession);
 
             var cartIngredients = _context.CartItemIngredients.Include(x => x.Ingredient).Where(x => x.Enabled);
 
@@ -129,7 +133,11 @@ namespace OnlinePizza.Services
 
             var ingrePrice = 0;
 
-            var cart = _context.Carts.Include(x => x.Items).ThenInclude(x => x.CartItemIngredients).ThenInclude(x => x.Ingredient).FirstOrDefault(x => x.CartId == cartSession);
+            var cart = _context.Carts
+                .Include(x => x.Items)
+                .ThenInclude(x => x.CartItemIngredients)
+                .ThenInclude(x => x.Ingredient)
+                .FirstOrDefault(x => x.CartId == cartSession);
 
             var cartIngredients = _context.CartItemIngredients.Include(x => x.Ingredient).Where(x => x.Enabled);
 
@@ -160,9 +168,5 @@ namespace OnlinePizza.Services
 
             return item;
         }
-
-
     }
-
-
 }

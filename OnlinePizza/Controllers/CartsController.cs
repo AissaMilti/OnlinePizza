@@ -124,7 +124,7 @@ namespace OnlinePizza.Controllers
                         .ThenInclude(cii => cii.Ingredient)
                         .Include(d => d.Dish)
                         .ThenInclude(di => di.DishIngredients)
-                        .ThenInclude(dii => dii.Ingredient) 
+                        .ThenInclude(dii => dii.Ingredient)
                         .SingleOrDefault(m => m.CartItemId == id);
 
                     foreach (var cartItemIngredient in itemToEdit.CartItemIngredients)
@@ -139,8 +139,7 @@ namespace OnlinePizza.Controllers
                         var cartItemIngredient = new CartItemIngredient
                         {
                             Ingredient = ingredient,
-                            Enabled = formCollection.Keys.Any(x => x == $"IngredientBox-{ingredient.IngredientId}")
-                            ,
+                            Enabled = formCollection.Keys.Any(x => x == $"IngredientBox-{ingredient.IngredientId}"),
                             CartItemIngredientPrice = ingredient.Price
                         };
                         itemToEdit.CartItemIngredients.Add(cartItemIngredient);
@@ -163,7 +162,7 @@ namespace OnlinePizza.Controllers
 
             }
             return View("Index");
-           
+
         }
 
 
@@ -181,11 +180,5 @@ namespace OnlinePizza.Controllers
         {
             return _context.Carts.Any(e => e.CartId == id);
         }
-
-
-
     }
-
-
-
 }
