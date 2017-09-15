@@ -102,7 +102,7 @@ namespace OnlinePizza.Services
             return cart.Items;
         }
 
-        public int TotalPrice(HttpContext httpContext)
+        public int TotalPriceForCart(HttpContext httpContext)
         {
 
             var cartSession = httpContext.Session.GetInt32("CartSession");
@@ -111,12 +111,15 @@ namespace OnlinePizza.Services
 
             var cart = _context.Carts.Include(x => x.Items).ThenInclude(x => x.CartItemIngredients).ThenInclude(x => x.Ingredient).FirstOrDefault(x => x.CartId == cartSession);
 
+            var cartIngredients = _context.CartItemIngredients.Include(x => x.Ingredient).Where(x => x.Enabled);
 
             foreach (var itemPrice in cart.Items)
             {
                 totalPrice += itemPrice.Dish.Price;
-            }
 
+                totalPrice += itemPrice.CartItemIngredients.Where(s => s.Enabled).Sum(cii => itemPrice.Dish
+                    .DishIngredients.Any(di => di.IngredientId == cii.IngredientId) ? 0 : cii.Ingredient.Price);
+            }
             return totalPrice;
         }
 
