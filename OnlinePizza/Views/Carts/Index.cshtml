@@ -24,61 +24,64 @@
 
             <table style="margin: auto" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
                 <thead>
-                    <tr>
-                        <th style="text-align: left">Rätt</th>
-                        <th style="text-align: left">Ingredient</th>
-                        <th>Pris</th>
-                        <th>Ingredientpris</th>
-                        <th>Åtgärd</th>
+                <tr>
+                    <th style="text-align: left">Rätt</th>
+                    <th style="text-align: left">Ingredient</th>
+                    <th>Pris</th>
+                    <th>Ingredientpris</th>
+                    <th>Åtgärd</th>
                         
-                    </tr>
+                </tr>
                 </thead>
 
 
                 <tbody>
-                    @foreach (var item in CartService.GetCartItems(Context))
-                    {
+                @foreach (var item in CartService.GetCartItems(Context))
+                {
 
-                        <tr>
-                            <td style="text-align: left;">
-                                <b>@item.Dish.Name</b>
+                    <tr>
+                        <td style="text-align: left;">
+                            <b>@item.Dish.Name</b>
 
-                            </td>
+                        </td>
 
-                            <td style="text-align: left">
-                                @foreach (var i in item.CartItemIngredients.Where(x => x.Enabled))
-                                {
-                                    <span>@i.Ingredient.Name</span>
-                                }
+                        <td style="text-align: left">
+                            @foreach (var i in item.CartItemIngredients.Where(x => x.Enabled))
+                            {
+                                <span>@i.Ingredient.Name</span>
+                            }
                                 
-                            </td>
-                            <td>@item.Dish.Price kr</td>
-                            <td>@CartService.GetExtraIngredientPrice(Context, item.Dish.DishId, item.CartItemId) kr</td>
-                            <td style="text-align: center">
-                                <a asp-controller="Carts" asp-action="Delete" asp-route-id="@item.CartItemId">
-                                    <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
-                                </a><br />
-                                <a asp-controller="Carts" asp-action="Edit" asp-route-id="@item.CartItemId">
-                                    <i class="fa fa-pencil-square-o" aria-hidden="true" style="color: green"></i>
-                                </a>
+                        </td>
+                        <td>@item.Dish.Price kr</td>
+                        <td>@CartService.GetExtraIngredientPrice(Context, item.Dish.DishId, item.CartItemId) kr</td>
+                        <td style="text-align: center">
+                            <a asp-controller="Carts" asp-action="Delete" asp-route-id="@item.CartItemId">
+                                <i class="fa fa-times" aria-hidden="true" style="color: red"></i>
+                            </a><br />
+                            <a asp-controller="Carts" asp-action="Edit" asp-route-id="@item.CartItemId">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true" style="color: green"></i>
+                            </a>
 
-                            </td>
+                        </td>
                             
-                        </tr>
-                    }
+                    </tr>
+                }
 
                 </tbody>
                 <tfoot>
-                    <tr style="background-color: #c3d6f4">
-                        <th style="text-align: left">Total pris:</th>
-                        <th style="text-align: left"></th>
-                        <th>@CartService.TotalPriceForCart(Context) kr</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
+                <tr style="background-color: #c3d6f4">
+                    <th style="text-align: left">Total pris:</th>
+                    <th style="text-align: left"></th>
+                    <th>@CartService.TotalPriceForCart(Context) kr</th>
+                    <th></th>
+                    <th></th>
+                </tr>
                 </tfoot>
             </table>
-
+          
         </form>
+        
+        
     </div>
+   
 </div>

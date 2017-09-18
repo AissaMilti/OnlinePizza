@@ -12,5 +12,6 @@ namespace OnlinePizza.Models
         public ApplicationUser ApplicationUser { get; set; }
         public int ApplicationId { get; set; }
         public List<CartItem> Items { get; set; }
+       
     }
 }

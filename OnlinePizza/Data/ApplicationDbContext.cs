@@ -57,5 +57,7 @@ namespace OnlinePizza.Data
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<CartItemIngredient> CartItemIngredients { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
     }
 }
