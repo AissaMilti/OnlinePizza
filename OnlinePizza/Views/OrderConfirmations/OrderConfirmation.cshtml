@@ -1,0 +1,32 @@
+﻿@model OnlinePizza.Models.OrderConfirmation
+@inject OnlinePizza.Services.IngredientService _ingredientService
+
+<table>
+    <tr><td>@Model.Order.FirstName</td></tr>
+    <tr><td>@Model.Order.LastName</td></tr>
+    <tr><td>@Model.Order.ShippingAddress</td></tr>
+    <tr><td>@Model.Order.PostalCode</td></tr>
+    <tr><td>@Model.Order.City</td></tr>
+    <tr><td>@Model.Order.Email</td></tr>
+    <tr><td>@Model.Order.PhoneNumber<br /><br /></td></tr>
+    <tr><td>@Model.Order.CardName</td></tr>
+    <tr><td>@Model.Order.CardNumber</td></tr>
+    <tr><td>@Model.Order.MMYY</td></tr>
+    <tr><td>@Model.Order.CVC</td></tr>
+
+
+    @foreach (var item in Model.Order.CartItem)
+    {
+        <tr><th>@item.Dish.Name</th></tr>
+        <tr><td>@item.Dish.Price</td></tr>
+        <tr>
+            <td>
+                @foreach (var ingredient in  _ingredientService.AllIngredientsForDish(item.Dish.DishId))
+                {
+                    @ingredient<br />
+                }
+            </td>
+        </tr>
+    }
+    <tr><th>Total : @Model.Order.CartItem.Sum(p => p.Dish.Price * p.Quantity)</th></tr>
+</table>

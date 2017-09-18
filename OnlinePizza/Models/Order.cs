@@ -23,9 +23,11 @@ namespace OnlinePizza.Models
         public string CVC { get; set; }
 
         public int UserId { get; set; }
-        public ApplicationUser User { get; set; }
+       // public ApplicationUser User { get; set; }
         public Cart Cart { get; set; }
         public int CartId { get; set; }
+
+        public List<Cart> CartList { get; set; }
 
         public List<CartItem> CartItem { get; set; }
        
