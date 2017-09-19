@@ -12,24 +12,8 @@ namespace OnlinePizza.Data
     {
         public static void Initialize(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<IdentityRole> roleManager, DishService dishService)
         {
-            var aUser = new ApplicationUser
-            {
-                UserName = "student@test.com",
-                Email = "student@test.com"
-            };
-            var userResult = userManager.CreateAsync(aUser, "Pa$$w0rd").Result;
-
-            var adminRole = new IdentityRole { Name = "Admin" };
-            var roleResult = roleManager.CreateAsync(adminRole).Result;
-
-            var adminUser = new ApplicationUser
-            {
-                UserName = "admin@test.com",
-                Email = "admin@test.com"
-            };
-            var adminUserResult = userManager.CreateAsync(adminUser, "Pa$$w0rd").Result;
-
-            var roleAddedResult = userManager.AddToRoleAsync(adminUser, "Admin").Result;
+            CreateUser(userManager, roleManager);
+            CreateAdmin(userManager, roleManager);
 
             if (!context.Dishes.Any())
             {
@@ -95,5 +79,45 @@ namespace OnlinePizza.Data
                 context.SaveChanges();
             }
         }
+
+        private static void CreateAdmin(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            var adminRole = new IdentityRole { Name = "Admin" };
+            var roleResult = roleManager.CreateAsync(adminRole).Result;
+            var adminUser = new ApplicationUser
+            {
+                UserName = "admin@test.com",
+                Email = "admin@test.com",
+                FirstName = "Aissa",
+                LastName = "Milti",
+                Address = "Hippievägen 3",
+                PostalCode = "12312",
+                City = "Stockholm",
+                PhoneNumber = "123456789"
+            };
+            var adminuserResult = userManager.CreateAsync(adminUser, "Test1234!").Result;
+            userManager.AddToRoleAsync(adminUser, "Admin");
+        }
+
+        private static void CreateUser(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            var userRole = new IdentityRole { Name = "User" };
+            var userResult = roleManager.CreateAsync(userRole).Result;
+            var user = new ApplicationUser
+            {
+                UserName = "student@test.com",
+                Email = "student@test.com",
+                PhoneNumber = "1234567890",
+                Address = "studentvägen 1",
+                PostalCode = "11111",
+                City = "Stockholm",
+                FirstName = "Student",
+                LastName = "Test"
+            };
+
+            var userUserResult = userManager.CreateAsync(user, "Test1234!").Result;
+            userManager.AddToRoleAsync(user, "User");
+        }
+
     }
 }
