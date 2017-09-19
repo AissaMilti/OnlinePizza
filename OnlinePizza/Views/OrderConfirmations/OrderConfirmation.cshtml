@@ -21,10 +21,7 @@
         <tr><td>@item.Dish.Price</td></tr>
         <tr>
             <td>
-                @foreach (var ingredient in  _ingredientService.AllIngredientsForDish(item.Dish.DishId))
-                {
-                    @ingredient<br />
-                }
+                @_ingredientService.AllIngredientsForDish(item.Dish.DishId)
             </td>
         </tr>
     }
