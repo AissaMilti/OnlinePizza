@@ -1,8 +1,24 @@
 ﻿@model OnlinePizza.Models.OrderConfirmation
 @inject OnlinePizza.Services.IngredientService _ingredientService
+ 
+@if (User.Identity.IsAuthenticated)
+{
+    <tr><td>@Model.User.FirstName</td></tr>
+    <tr><td>@Model.User.LastName</td></tr>
 
-<table>
-    <tr><td>@Model.Order.FirstName</td></tr>
+    foreach (var item in Model.CartItems)
+     {
+        @item.Dish.Name
+        @item.Dish.Price
+
+         @_ingredientService.AllIngredientsForDish(item.Dish.DishId)
+     }
+}
+
+else
+{
+    <table>
+        <tr><td>@Model.Order.FirstName</td></tr>
     <tr><td>@Model.Order.LastName</td></tr>
     <tr><td>@Model.Order.ShippingAddress</td></tr>
     <tr><td>@Model.Order.PostalCode</td></tr>
@@ -15,15 +31,16 @@
     <tr><td>@Model.Order.CVC</td></tr>
 
 
-    @foreach (var item in Model.Order.CartItem)
-    {
-        <tr><th>@item.Dish.Name</th></tr>
-        <tr><td>@item.Dish.Price</td></tr>
-        <tr>
-            <td>
-                @_ingredientService.AllIngredientsForDish(item.Dish.DishId)
-            </td>
-        </tr>
-    }
-    <tr><th>Total : @Model.Order.CartItem.Sum(p => p.Dish.Price * p.Quantity)</th></tr>
-</table>
+        @foreach (var item in Model.Order.CartItem)
+        {
+            <tr><th>@item.Dish.Name</th></tr>
+            <tr><td>@item.Dish.Price</td></tr>
+            <tr>
+                <td>
+                    @_ingredientService.AllIngredientsForDish(item.Dish.DishId)
+                </td>
+            </tr>
+        }
+        <tr><th>Total : @Model.Order.CartItem.Sum(p => p.Dish.Price * p.Quantity)</th></tr>
+    </table>
+}

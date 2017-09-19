@@ -28,27 +28,35 @@ namespace OnlinePizza.Controllers
             var cartId = (int)HttpContext.Session.GetInt32("CartSession");
             var user = await _userManager.GetUserAsync(User);
 
-            if (User.IsInRole("User"))
+            if (User.Identity.IsAuthenticated)
             {
 
-
-                var currentGuest = await _context.Orders
-                    .Include(x => x.Cart)
-                    .ThenInclude(x => x.Items)
+                var currentOrder = await _context.Carts
+                   
+                    .Include(x => x.Items)
                     .ThenInclude(x => x.CartItemIngredients)
                     .ThenInclude(x => x.Ingredient)
-                    .Include(x => x.CartItem)
+                    .Include(x => x.Items)
                     .ThenInclude(x => x.Dish)
-                    .SingleOrDefaultAsync(x => x.OrderId == orderId && x.CartId == cartId);
+                    .SingleOrDefaultAsync(x=> x.CartId == cartId);
+
+                var order = new Order()
+                {
+                    OrderId = orderId
+                };
+
 
                 var newOrder = new OrderConfirmation
                 {
-                    Order = currentGuest
+                    Order = order,
+                    User = user,
+                    CartItems = currentOrder.Items
+
                 };
 
                 var session = HttpContext.Session;
                 session.Remove("CartSession");
-                return View();
+                return View(newOrder);
             }
             else
             {
@@ -67,8 +75,6 @@ namespace OnlinePizza.Controllers
                 {
                     Order = currentGuest
                 };
-
-                orderConfirm = newOrder;
 
                 var session = HttpContext.Session;
                 session.Remove("CartSession");

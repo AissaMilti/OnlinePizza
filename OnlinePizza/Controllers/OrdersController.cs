@@ -31,7 +31,7 @@ namespace OnlinePizza.Controllers
 
             var cartId = (int)HttpContext.Session.GetInt32("CartSession");
             var user = await _userManager.GetUserAsync(User);
-            if (User.IsInRole("User"))
+            if (User.Identity.IsAuthenticated)
             {
                 var newUser = new OrderViewModel
                 {
@@ -69,7 +69,7 @@ namespace OnlinePizza.Controllers
 
             cartItems = cart.Items;
 
-            if (User.IsInRole("User"))
+            if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
 
@@ -77,13 +77,13 @@ namespace OnlinePizza.Controllers
                 {
                     User = new ApplicationUser
                     {
-                        FirstName = orderVM.Order.FirstName,
-                        LastName = orderVM.Order.LastName,
-                        Address = orderVM.Order.ShippingAddress,
-                        PostalCode = orderVM.Order.PostalCode,
-                        City = orderVM.Order.City,
-                        Email = orderVM.Order.Email,
-                        PhoneNumber = orderVM.Order.PhoneNumber
+                        FirstName = orderVM.User.FirstName,
+                        LastName = orderVM.User.LastName,
+                        Address = orderVM.User.Address,
+                        PostalCode = orderVM.User.PostalCode,
+                        City = orderVM.User.City,
+                        Email = orderVM.User.Email,
+                        PhoneNumber = orderVM.User.PhoneNumber
 
                     },
                     Order = new Order()
@@ -97,6 +97,7 @@ namespace OnlinePizza.Controllers
                         CVC = orderVM.Order.CVC
                     }
                 };
+               
                 return RedirectToAction("OrderConfirmation", "OrderConfirmations", newModel);
             }
             else
@@ -153,23 +154,6 @@ namespace OnlinePizza.Controllers
             return View();
         }
 
-        // POST: Orders/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Create([Bind("OrderId,UserId,CartId")] Order order)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(order);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["CartId"] = new SelectList(_context.Carts, "CartId", "CartId", order.CartId);
-        //    return View(order);
-        //}
-
         // GET: Orders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -187,43 +171,7 @@ namespace OnlinePizza.Controllers
             return View(order);
         }
 
-        // POST: Orders/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("OrderId,UserId,CartId")] Order order)
-        //{
-        //    if (id != order.OrderId)
-        //    {
-        //        return NotFound();
-        //    }
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(order);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!OrderExists(order.OrderId))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["CartId"] = new SelectList(_context.Carts, "CartId", "CartId", order.CartId);
-        //    return View(order);
-        //}
-
-        // GET: Orders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -242,16 +190,6 @@ namespace OnlinePizza.Controllers
             return View(order);
         }
 
-        // POST: Orders/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> DeleteConfirmed(int id)
-        //{
-        //    var order = await _context.Orders.SingleOrDefaultAsync(m => m.OrderId == id);
-        //    _context.Orders.Remove(order);
-        //    await _context.SaveChangesAsync();
-        //    return RedirectToAction(nameof(Index));
-        //}
 
         private bool OrderExists(int id)
         {

@@ -11,5 +11,9 @@ namespace OnlinePizza.Models
         [Key]
         public int ConfirmationId { get; set; }
         public Order Order { get; set; }
+        public ApplicationUser User { get; set; }
+
+        public List<CartItem> CartItems { get; set; }
+       
     }
 }
