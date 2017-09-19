@@ -26,6 +26,10 @@ namespace OnlinePizza.Models
         public string ConfirmPassword { get; set; }
         public string Phone { get; set; }
 
+        public string CardName { get; set; }
+        public string CardNumber { get; set; }
+
         public List<CartItem> CartItem { get; set; }
+       
     }
 }

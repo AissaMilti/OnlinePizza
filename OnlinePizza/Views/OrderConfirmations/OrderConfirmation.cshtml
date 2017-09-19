@@ -1,46 +1,158 @@
 ﻿@model OnlinePizza.Models.OrderConfirmation
 @inject OnlinePizza.Services.IngredientService _ingredientService
- 
-@if (User.Identity.IsAuthenticated)
-{
-    <tr><td>@Model.User.FirstName</td></tr>
-    <tr><td>@Model.User.LastName</td></tr>
 
-    foreach (var item in Model.CartItems)
-     {
-        @item.Dish.Name
-        @item.Dish.Price
+<div class="mdl-grid">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="mdl-cell mdl-cell--6-col" style="width: auto">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th>Kunduppgifter</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
 
-         @_ingredientService.AllIngredientsForDish(item.Dish.DishId)
-     }
-}
+                <tr>
+                    <td>Namn: </td>
+                    <td>@Model.User.FirstName</td>
+                </tr>
+                <tr>
+                    <td>Efternamn: </td>
+                    <td>@Model.User.LastName</td>
+                </tr>
+                <tr>
+                    <td>Adress: </td>
+                    <td>@Model.User.Address</td>
+                </tr>
+                <tr>
+                    <td>Postnummer: </td>
+                    <td>@Model.User.PostalCode</td>
+                </tr>
+                <tr>
+                    <td>Postort: </td>
+                    <td>@Model.User.City</td>
+                </tr>
+                <tr>
+                    <td>Email: </td>
+                    <td>@Model.User.Email</td>
+                </tr>
+                <tr>
+                    <td>Telefonnummer: </td>
+                    <td>@Model.User.PhoneNumber</td>
+                </tr>
 
-else
-{
-    <table>
-        <tr><td>@Model.Order.FirstName</td></tr>
-    <tr><td>@Model.Order.LastName</td></tr>
-    <tr><td>@Model.Order.ShippingAddress</td></tr>
-    <tr><td>@Model.Order.PostalCode</td></tr>
-    <tr><td>@Model.Order.City</td></tr>
-    <tr><td>@Model.Order.Email</td></tr>
-    <tr><td>@Model.Order.PhoneNumber<br /><br /></td></tr>
-    <tr><td>@Model.Order.CardName</td></tr>
-    <tr><td>@Model.Order.CardNumber</td></tr>
-    <tr><td>@Model.Order.MMYY</td></tr>
-    <tr><td>@Model.Order.CVC</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mdl-cell mdl-cell--4-col">
+
+            <table style="margin: auto" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                    <tr>
+                        <th style="text-align: left">Rätt</th>
+                        <th style="text-align: left">Pris</th>
+                        <th>Ingredienser</th>
+                    </tr>
+                </thead>
 
 
-        @foreach (var item in Model.Order.CartItem)
-        {
-            <tr><th>@item.Dish.Name</th></tr>
-            <tr><td>@item.Dish.Price</td></tr>
-            <tr>
-                <td>
-                    @_ingredientService.AllIngredientsForDish(item.Dish.DishId)
-                </td>
-            </tr>
-        }
-        <tr><th>Total : @Model.Order.CartItem.Sum(p => p.Dish.Price * p.Quantity)</th></tr>
-    </table>
-}
+                <tbody>
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <tr>
+                            <td style="text-align: left;">
+                                @item.Dish.Name
+                            </td>
+                            <td> @item.Dish.Price</td>
+
+                            <td> @_ingredientService.AllIngredientsForDish(item.Dish.DishId)</td>
+                        </tr>
+                    }
+                </tbody>
+
+
+            </table>
+
+        </div>
+    }
+
+
+    else
+    {
+        <div class="mdl-cell mdl-cell--6-col" style="width: auto">
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th>Kunduppgifter</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr>
+                    <td>Namn: </td>
+                    <td>@Model.Order.FirstName</td>
+                </tr>
+                <tr>
+                    <td>Efternamn: </td>
+                    <td>@Model.Order.LastName</td>
+                </tr>
+                <tr>
+                    <td>Adress: </td>
+                    <td>@Model.Order.ShippingAddress</td>
+                </tr>
+                <tr>
+                    <td>Postnummer: </td>
+                    <td>@Model.Order.PostalCode</td>
+                </tr>
+                <tr>
+                    <td>Postort: </td>
+                    <td>@Model.Order.City</td>
+                </tr>
+                <tr>
+                    <td>Email: </td>
+                    <td>@Model.Order.Email</td>
+                </tr>
+                <tr>
+                    <td>Telefonnummer: </td>
+                    <td>@Model.Order.PhoneNumber</td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mdl-cell mdl-cell--4-col">
+
+            <table style="margin: auto" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+                <thead>
+                <tr>
+                    <th style="text-align: left">Rätt</th>
+                    <th style="text-align: left">Pris</th>
+                    <th>Ingredienser</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                @foreach (var item in Model.Order.CartItem)
+                {
+                    <tr><td>@item.Dish.Name</td>
+                    <td>@item.Dish.Price</td>
+                   
+                        <td>
+                            @_ingredientService.AllIngredientsForDish(item.Dish.DishId)
+                        </td>
+                    </tr>
+                }
+                <tr><th>Total : @Model.Order.CartItem.Sum(p => p.Dish.Price * p.Quantity)</th></tr>
+                </tbody>
+
+
+            </table>
+
+        </div>
+    }
+</div>  
