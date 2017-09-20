@@ -53,6 +53,7 @@ namespace OnlinePizza.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> OrderPayment(OrderViewModel orderVM)
         {
             var cartId = (int)HttpContext.Session.GetInt32("CartSession");
@@ -69,25 +70,60 @@ namespace OnlinePizza.Controllers
 
             cartItems = cart.Items;
 
-            if (User.Identity.IsAuthenticated)
+            if (ModelState.IsValid)
             {
-                var user = await _userManager.GetUserAsync(User);
+               
 
-                var newModel = new OrderViewModel
+                if (User.Identity.IsAuthenticated)
                 {
-                    User = new ApplicationUser
-                    {
-                        FirstName = orderVM.User.FirstName,
-                        LastName = orderVM.User.LastName,
-                        Address = orderVM.User.Address,
-                        PostalCode = orderVM.User.PostalCode,
-                        City = orderVM.User.City,
-                        Email = orderVM.User.Email,
-                        PhoneNumber = orderVM.User.PhoneNumber
+                    var user = await _userManager.GetUserAsync(User);
 
-                    },
-                    Order = new Order()
+                    var newModel = new OrderViewModel
                     {
+                        User = new ApplicationUser
+                        {
+                            FirstName = orderVM.User.FirstName,
+                            LastName = orderVM.User.LastName,
+                            Address = orderVM.User.Address,
+                            PostalCode = orderVM.User.PostalCode,
+                            City = orderVM.User.City,
+                            Email = orderVM.User.Email,
+                            PhoneNumber = orderVM.User.PhoneNumber,
+                            CardName = orderVM.User.CardName,
+                            CardNumber = orderVM.User.CardNumber,
+                            CVC = orderVM.User.CVC,
+                            MMYY = orderVM.User.MMYY,
+                        },
+                        //Order = new Order()
+                        //{
+                        //    CartId = cartId,
+                        //    Cart = cart,
+                        //    CartItem = cartItems,
+                        //    CardName = orderVM.Order.CardName,
+                        //    CardNumber = orderVM.Order.CardNumber,
+                        //    MMYY = orderVM.Order.MMYY,
+                        //    CVC = orderVM.Order.CVC
+                        //}
+                    };
+
+                    return RedirectToAction("OrderConfirmation", "OrderConfirmations", newModel);
+
+
+                }
+                else
+                {
+
+
+                    var newPayment = new Order()
+                    {
+                        OrderId = orderVM.Order.OrderId,
+                        FirstName = orderVM.Order.FirstName,
+                        LastName = orderVM.Order.LastName,
+                        ShippingAddress = orderVM.Order.ShippingAddress,
+                        PostalCode = orderVM.Order.PostalCode,
+                        Email = orderVM.Order.Email,
+                        PhoneNumber = orderVM.Order.PhoneNumber,
+                        City = orderVM.Order.City,
                         CartId = cartId,
                         Cart = cart,
                         CartItem = cartItems,
@@ -95,38 +131,20 @@ namespace OnlinePizza.Controllers
                         CardNumber = orderVM.Order.CardNumber,
                         MMYY = orderVM.Order.MMYY,
                         CVC = orderVM.Order.CVC
-                    }
-                };
-               
-                return RedirectToAction("OrderConfirmation", "OrderConfirmations", newModel);
-            }
-            else
-            {
-                var newPayment = new Order()
-                {
-                    OrderId = orderVM.Order.OrderId,
-                    FirstName = orderVM.Order.FirstName,
-                    LastName = orderVM.Order.LastName,
-                    ShippingAddress = orderVM.Order.ShippingAddress,
-                    PostalCode = orderVM.Order.PostalCode,
-                    Email = orderVM.Order.Email,
-                    PhoneNumber = orderVM.Order.PhoneNumber,
-                    City = orderVM.Order.City,
-                    CartId = cartId,
-                    Cart = cart,
-                    CartItem = cartItems,
-                    CardName = orderVM.Order.CardName,
-                    CardNumber = orderVM.Order.CardNumber,
-                    MMYY = orderVM.Order.MMYY,
-                    CVC = orderVM.Order.CVC
-                };
+                    };
 
-                await _context.Orders.AddAsync(newPayment);
-                await _context.SaveChangesAsync();
+                    await _context.Orders.AddAsync(newPayment);
+                    await _context.SaveChangesAsync();
 
-                return RedirectToAction("OrderConfirmation", "OrderConfirmations", newPayment);
+                    return RedirectToAction("OrderConfirmation", "OrderConfirmations", newPayment);
+
+                }
+
             }
+            return View();
+
         }
+
 
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)

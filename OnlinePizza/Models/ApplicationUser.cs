@@ -11,23 +11,43 @@ namespace OnlinePizza.Models
     public class ApplicationUser : IdentityUser
     {
         public int UserId { get; set; }
-        
+        [Required]
+        [Display(Name = "Firstname")]
         public string FirstName { get; set; }
+        [Required]
+        [Display(Name = "Lastname")]
         public string LastName { get; set; }
+        [Required]
+        [Display(Name = "Address")]
         public string Address { get; set; }
+        [Required]
+        [Display(Name = "Postal Code")]
         public string PostalCode { get; set; }
+        [Required]
+        [Display(Name = "City")]
         public string City { get; set; }
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
         public string Email { get; set; }
-        [DataType(DataType.Password)]
+        
         public string Password { get; set; }
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("UserPassword", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
         public string Phone { get; set; }
-
+        [Required]
+        [Display(Name = "Card name")]
         public string CardName { get; set; }
+        [Required]
+       
+        [Display(Name = "Card number")]
         public string CardNumber { get; set; }
+        [Required]
+
+        [Display(Name = "MMYY")]
+        public string MMYY { get; set; }
+        [Required]
+        [Display(Name = "CVC")]
+        public string CVC { get; set; }
 
         public List<CartItem> CartItem { get; set; }
        

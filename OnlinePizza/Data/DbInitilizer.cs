@@ -112,7 +112,13 @@ namespace OnlinePizza.Data
                 PostalCode = "11111",
                 City = "Stockholm",
                 FirstName = "Student",
-                LastName = "Test"
+                LastName = "Test",
+                CardName = "Visa",
+                CVC = "123",
+                CardNumber = "12345",
+                MMYY = "1118",
+                Password = "Test1234!",
+                ConfirmPassword = "Test1234!"
             };
 
             var userUserResult = userManager.CreateAsync(user, "Test1234!").Result;
